@@ -7,6 +7,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01nm4"]
 size = Vector2(40, 40)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_01nm4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="Tank" type="StaticBody2D"]
 script = ExtResource("1_01nm4")
 
@@ -19,3 +24,6 @@ offset = Vector2(0, -10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_01nm4")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_01nm4")

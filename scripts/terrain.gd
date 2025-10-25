@@ -4,33 +4,15 @@ extends Node2D
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 var _colors = ["1blue", "2green", "3red", "4sand"]
-var _tank_scene = load("res://scenes/tank.tscn")
 var peer_data: Dictionary[String, PeerData]
 var tanks_map: Dictionary[String, Tank]
 var my_id: String
+var _tank_scene = load("res://scenes/tank.tscn")
 
 func _ready() -> void:
-	pass
-
-func add_tank(id: String):
-	var t: Tank = _tank_scene.instantiate()
-	t.name = id # RELEVANT
-	
-	t.position.x = randf() * 300
-	t.position.y = randf() * 300
-	#add_child(t)
-	var nth = peer_data.size()
-	t.set_theme(_colors[nth - 1])
-	tanks_map.set(id, t)
-	
-	#spawner.add_child(t)
-	spawner.get_node(spawner.spawn_path).call_deferred("add_child", t)
-	#get_node(spawner.spawn_path).call_deferred("add_child", t)
-
-func remove_tank(id: String):
-	var t = tanks_map.get(id)
-	remove_child(t)
-	tanks_map.erase(id)
+	spawner.spawn_function = _custom_spawn_function
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 func _input(ev: InputEvent) -> void:
 	#if not ev.is_action_type() == InputEventAction: return
@@ -60,8 +42,8 @@ func _input(ev: InputEvent) -> void:
 		return
 	else:
 		return
-	send_inputs.rpc(pd.dx, pd.dy)
 	#print(pd)
+	send_inputs.rpc(pd.dx, pd.dy)
 
 @rpc("any_peer", "call_local", "reliable")
 func send_inputs(dx: float, dy: float):
@@ -72,13 +54,93 @@ func send_inputs(dx: float, dy: float):
 	pd.dy = dy
 
 func _physics_process(delta: float) -> void:
-	if my_id != "1": return
-	#if TubeClient
+	if not multiplayer.is_server(): return
+
 	for id in tanks_map:
 		var t: Tank = tanks_map.get(id)
+		if t == null:
+			print("early abort from process")
+			return
 		var pd: PeerData = peer_data.get(id)
-		var dx = pd.dx * delta * 50
-		var dy = pd.dy * delta * 50
-		t.position.x += dx
-		t.position.y += dy
-		#print(str(t.position))
+		if t != null and pd != null:
+			var dx = pd.dx * delta * 50
+			var dy = pd.dy * delta * 50
+			t.position.x += dx
+			t.position.y += dy
+
+func _on_peer_connected(id: int) -> void:
+	print("Terrain: Peer connected: ", id)
+	if multiplayer.is_server():
+		spawn_tank_for_peer(str(id))
+
+func _on_peer_disconnected(id: int) -> void:
+	print("Terrain: Peer disconnected: ", id)
+	if multiplayer.is_server():
+		despawn_tank_for_peer(str(id))
+
+# Custom spawn function called by MultiplayerSpawner
+func _custom_spawn_function(spawn_data: Variant) -> Node:
+	var tank = _tank_scene.instantiate()
+
+	if spawn_data is Dictionary:
+		var data = spawn_data as Dictionary
+		if data.has("peer_id"):
+			tank.peer_id = data["peer_id"]
+			tank.name = "Tank_" + data["peer_id"]
+		if data.has("position"):
+			tank.position = data["position"]
+		if data.has("color"):
+			tank.set_theme(data["color"])
+
+	return tank
+
+func spawn_tank_for_peer(peer_id: String) -> void:
+	if not multiplayer.is_server():
+		return
+
+	if tanks_map.has(peer_id):
+		print("Tank already exists for peer: ", peer_id)
+		return
+
+	var color_index = tanks_map.size() % _colors.size()
+	var tank_color = _colors[color_index]
+	var spawn_pos = get_spawn_position()
+
+	var spawn_data = {
+		"peer_id": peer_id,
+		"color": tank_color,
+		"position": spawn_pos
+	}
+
+	var tank = spawner.spawn(spawn_data)
+
+	if tank:
+		tanks_map[peer_id] = tank
+		print("Spawned tank for peer ", peer_id, " with color ", tank_color, " at ", spawn_pos)
+
+func despawn_tank_for_peer(peer_id: String) -> void:
+	if not multiplayer.is_server():
+		return
+
+	var tank = tanks_map.get(peer_id)
+	if tank:
+		tanks_map.erase(peer_id)
+		# Remove the tank from the scene
+		tank.queue_free()
+		print("Despawned tank for peer: ", peer_id)
+
+func get_spawn_position() -> Vector2:
+	# Simple spawn positioning - you can make this more sophisticated
+	var spawn_positions = [
+		Vector2(100, 100),
+		Vector2(200, 100),
+		Vector2(100, 200),
+		Vector2(200, 200)
+	]
+	var index = tanks_map.size() % spawn_positions.size()
+	return spawn_positions[index]
+
+# Function to spawn tank for server/host player
+func spawn_tank_for_server() -> void:
+	if multiplayer.is_server() and my_id != "":
+		spawn_tank_for_peer(my_id)
