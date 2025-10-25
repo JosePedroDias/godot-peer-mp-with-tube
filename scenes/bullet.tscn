@@ -14,7 +14,9 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Bullet" type="StaticBody2D"]
+[node name="Bullet" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_y25gk")
 
 [node name="main" type="Sprite2D" parent="."]

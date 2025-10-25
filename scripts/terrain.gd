@@ -10,6 +10,7 @@ var bullets: Array[Bullet] = []
 var my_id: String
 var _tank_scene = load("res://scenes/tank.tscn")
 var _bullet_scene = load("res://scenes/bullet.tscn")
+
 const TANK_SPEED: float = 80
 const TANK_R_SPEED: float = 5
 const BULLET_SPEED: float = 8
@@ -40,7 +41,6 @@ func _input(ev: InputEvent) -> void:
 		send_rot.rpc(1)
 	elif ev.is_action_released("rotate_right"):
 		send_rot.rpc(0)
-		
 		
 	elif ev.is_action_pressed("fire"):
 		send_fire.rpc()
@@ -75,14 +75,13 @@ func send_fire():
 	var b_dir = Vector2.from_angle(b_rot)
 	p += b_dir * BULLET_SPEED * 3
 
-	var bullet_spawn_data = {
+	var bullet = spawner.spawn({
 		"type": "bullet",
 		"owner_id": id,
 		"pos": p,
 		"dir": b_dir,
 		"rotation": b_rot
-	}
-	var bullet = spawner.spawn(bullet_spawn_data)
+	})
 	if bullet:print("Spawned bullet for peer ", id, " at ", p)
 
 func _physics_process(delta: float) -> void:
@@ -90,14 +89,20 @@ func _physics_process(delta: float) -> void:
 
 	var bullets_to_remove = []
 	for bu in bullets:
+		if not is_instance_valid(bu):
+			bullets_to_remove.append(bu)
+			continue
+
 		bu.time_left -= delta
 		var d_pos = bu.dir * BULLET_SPEED
 		bu.position += d_pos
-		if bu.time_left < 0: bullets_to_remove.append(bu)
+
+		if bu.time_left < 0:
+			bullets_to_remove.append(bu)
+			bu.queue_free()
 
 	for bu in bullets_to_remove:
 		bullets.erase(bu)
-		bu.queue_free()
 		
 	for id in tanks_map:
 		var t: Tank = tanks_map.get(id)
@@ -107,8 +112,12 @@ func _physics_process(delta: float) -> void:
 			var dx = pd.dx * delta * TANK_SPEED
 			var dy = pd.dy * delta * TANK_SPEED
 			var dr = pd.dr * delta * TANK_R_SPEED
-			t.position.x += dx
-			t.position.y += dy
+
+			var motion = Vector2(dx, dy)
+			if motion.length() > 0:
+				var collision = t.move_and_collide(motion)
+				if collision:
+					print("Tank ", id, " collision detected")
 			t.rotate_barrel(t.get_barrel_rotation() + dr)
 
 func _on_peer_connected(id: int) -> void:
@@ -122,14 +131,12 @@ func _on_peer_disconnected(id: int) -> void:
 func _custom_spawn_function(spawn_data: Variant) -> Node:
 	if spawn_data is Dictionary:
 		var data = spawn_data as Dictionary
-
 		if data.has("type") and data["type"] == "tank":
 			var tank = _tank_scene.instantiate()
 			if data.has("peer_id"): tank.peer_id = data["peer_id"]
 			if data.has("pos"):     tank.position = data["pos"]
 			if data.has("theme"):   tank.set_theme(data["theme"])
 			return tank
-
 		elif data.has("type") and data["type"] == "bullet":
 			var bullet = _bullet_scene.instantiate()
 			if data.has("owner_id"): bullet.owner_id = data["owner_id"]
@@ -139,7 +146,6 @@ func _custom_spawn_function(spawn_data: Variant) -> Node:
 			bullet.time_left = BULLET_LIFE
 			bullets.append(bullet)
 			return bullet
-
 	return null
 
 func spawn_tank_for_peer(peer_id: String) -> void:
@@ -152,14 +158,12 @@ func spawn_tank_for_peer(peer_id: String) -> void:
 	var theme = _themes[ tanks_map.size() % _themes.size() ]
 	var pos = get_spawn_position()
 
-	var spawn_data = {
+	var tank = spawner.spawn({
 		"type": "tank",
 		"peer_id": peer_id,
 		"theme": theme,
 		"pos": pos
-	}
-
-	var tank = spawner.spawn(spawn_data)
+	})
 	if not tank: return
 	tanks_map[peer_id] = tank
 	print("Spawned tank for peer ", peer_id, " with thene ", theme, " at ", pos)

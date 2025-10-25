@@ -1,5 +1,5 @@
 class_name Tank
-extends StaticBody2D
+extends CharacterBody2D
 
 @onready var body_spr: Sprite2D = $TBody
 @onready var barrel_spr: Sprite2D = $TBarrel

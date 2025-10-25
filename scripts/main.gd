@@ -22,7 +22,6 @@ func _on_session_created():
 	peer_data.set(id, PeerData.new())
 	print("assigning myid: ", id)
 	print("peer_data: ", str(peer_data))
-	# Spawn tank for the server/host player
 	terrain.spawn_tank_for_server()
 
 func _on_session_joined():
@@ -33,7 +32,6 @@ func _on_session_joined():
 	peer_data.set(id, PeerData.new())
 	print("assigning myid: ", id)
 	print("peer_data: ", str(peer_data))
-	# Note: Tank spawning for clients will be handled by the server when peer_connected is triggered
 
 func _on_peer_connected(_id):
 	var id = str(_id)
