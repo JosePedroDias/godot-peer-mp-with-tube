@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcft4mvw3dmb6"]
+
+[ext_resource type="Texture2D" uid="uid://mdtwnpiscign" path="res://textures/projectiles/bulletDark2.png" id="1_mkf8s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkf8s"]
+size = Vector2(8, 12)
+
+[node name="Bullet" type="StaticBody2D"]
+
+[node name="main" type="Sprite2D" parent="."]
+texture = ExtResource("1_mkf8s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mkf8s")

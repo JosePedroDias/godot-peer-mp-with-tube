@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://4uufnii5g2di"]
+
+[ext_resource type="Script" uid="uid://jtx5iek7w4n" path="res://scripts/tank.gd" id="1_01nm4"]
+[ext_resource type="Texture2D" uid="uid://b2tax0gkmja0y" path="res://textures/tanks/1blue/bodyo.png" id="1_c4xvs"]
+[ext_resource type="Texture2D" uid="uid://hq5ykq15pn3m" path="res://textures/tanks/1blue/b1.png" id="2_01nm4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_01nm4"]
+size = Vector2(40, 40)
+
+[node name="Tank" type="StaticBody2D"]
+script = ExtResource("1_01nm4")
+
+[node name="TBody" type="Sprite2D" parent="."]
+texture = ExtResource("1_c4xvs")
+
+[node name="TBarrel" type="Sprite2D" parent="TBody"]
+texture = ExtResource("2_01nm4")
+offset = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_01nm4")
