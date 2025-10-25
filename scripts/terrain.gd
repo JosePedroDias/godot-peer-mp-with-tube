@@ -80,7 +80,8 @@ func send_fire():
 		"owner_id": id,
 		"pos": p,
 		"dir": b_dir,
-		"rotation": b_rot
+		"rotation": b_rot,
+		"terrain": self
 	})
 	if bullet:print("Spawned bullet for peer ", id, " at ", p)
 
@@ -143,6 +144,7 @@ func _custom_spawn_function(spawn_data: Variant) -> Node:
 			if data.has("pos"):      bullet.position = data["pos"]
 			if data.has("dir"):      bullet.dir = data["dir"]
 			if data.has("rotation"): bullet.rotation = data["rotation"]
+			if data.has("terrain"):  bullet.terrain = data["terrain"]
 			bullet.time_left = BULLET_LIFE
 			bullets.append(bullet)
 			return bullet
@@ -189,3 +191,9 @@ func get_spawn_position() -> Vector2:
 func spawn_tank_for_server() -> void:
 	if multiplayer.is_server() and my_id != "":
 		spawn_tank_for_peer(my_id)
+
+func apply_tank_damage(id: String, energy_to_remove: float) -> void:
+	var pd: PeerData = peer_data.get(id)
+	if pd == null: return
+	pd.energy_left = max(0, pd.energy_left - energy_to_remove)
+	print("tank " + id + "'s energy: ", pd.energy_left)
