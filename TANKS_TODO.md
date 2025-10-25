@@ -1,0 +1,12 @@
+- fix tank colors (all blue now)
+- show health bar on top of tank
+- change tank movement?
+- display explosion fx
+- display barrel fire fx
+- tank/tank sfx
+- tank/bullet sfx
+- limit map movement
+- add obstacles
+- better respawn logic
+- hide HUD, place it on bottom left?
+- dynamic cam (center on player, zoom with speed?)

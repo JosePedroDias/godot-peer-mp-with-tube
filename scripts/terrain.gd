@@ -83,7 +83,7 @@ func send_fire():
 		"rotation": b_rot,
 		"terrain": self
 	})
-	if bullet:print("Spawned bullet for peer ", id, " at ", p)
+	#if bullet: print("Spawned bullet for peer ", id, " at ", p)
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server(): return
@@ -168,7 +168,7 @@ func spawn_tank_for_peer(peer_id: String) -> void:
 	})
 	if not tank: return
 	tanks_map[peer_id] = tank
-	print("Spawned tank for peer ", peer_id, " with thene ", theme, " at ", pos)
+	#print("Spawned tank for peer ", peer_id, " with thene ", theme, " at ", pos)
 
 func despawn_tank_for_peer(peer_id: String) -> void:
 	if not multiplayer.is_server(): return
