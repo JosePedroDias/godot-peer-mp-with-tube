@@ -3,11 +3,12 @@ extends Node2D
 
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 
-var _colors = ["1blue", "2green", "3red", "4sand"]
+var _themes = ["1blue", "2green", "3red", "4sand"]
 var peer_data: Dictionary[String, PeerData]
 var tanks_map: Dictionary[String, Tank]
 var my_id: String
 var _tank_scene = load("res://scenes/tank.tscn")
+const SPEED: float = 50
 
 func _ready() -> void:
 	spawner.spawn_function = _custom_spawn_function
@@ -63,74 +64,62 @@ func _physics_process(delta: float) -> void:
 			return
 		var pd: PeerData = peer_data.get(id)
 		if t != null and pd != null:
-			var dx = pd.dx * delta * 50
-			var dy = pd.dy * delta * 50
+			var dx = pd.dx * delta * SPEED
+			var dy = pd.dy * delta * SPEED
 			t.position.x += dx
 			t.position.y += dy
 
 func _on_peer_connected(id: int) -> void:
 	print("Terrain: Peer connected: ", id)
-	if multiplayer.is_server():
-		spawn_tank_for_peer(str(id))
+	if multiplayer.is_server(): spawn_tank_for_peer(str(id))
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Terrain: Peer disconnected: ", id)
-	if multiplayer.is_server():
-		despawn_tank_for_peer(str(id))
+	if multiplayer.is_server(): despawn_tank_for_peer(str(id))
 
-# Custom spawn function called by MultiplayerSpawner
 func _custom_spawn_function(spawn_data: Variant) -> Node:
 	var tank = _tank_scene.instantiate()
-
 	if spawn_data is Dictionary:
 		var data = spawn_data as Dictionary
 		if data.has("peer_id"):
 			tank.peer_id = data["peer_id"]
 			tank.name = "Tank_" + data["peer_id"]
-		if data.has("position"):
-			tank.position = data["position"]
-		if data.has("color"):
-			tank.set_theme(data["color"])
-
+		if data.has("pos"):
+			tank.position = data["pos"]
+		if data.has("theme"):
+			tank.set_theme(data["theme"])
 	return tank
 
 func spawn_tank_for_peer(peer_id: String) -> void:
-	if not multiplayer.is_server():
-		return
+	if not multiplayer.is_server(): return
 
 	if tanks_map.has(peer_id):
 		print("Tank already exists for peer: ", peer_id)
 		return
 
-	var color_index = tanks_map.size() % _colors.size()
-	var tank_color = _colors[color_index]
-	var spawn_pos = get_spawn_position()
+	var theme = _themes[ tanks_map.size() % _themes.size() ]
+	var pos = get_spawn_position()
 
 	var spawn_data = {
 		"peer_id": peer_id,
-		"color": tank_color,
-		"position": spawn_pos
+		"theme": theme,
+		"pos": pos
 	}
 
 	var tank = spawner.spawn(spawn_data)
-
-	if tank:
-		tanks_map[peer_id] = tank
-		print("Spawned tank for peer ", peer_id, " with color ", tank_color, " at ", spawn_pos)
+	if not tank: return
+	tanks_map[peer_id] = tank
+	print("Spawned tank for peer ", peer_id, " with thene ", theme, " at ", pos)
 
 func despawn_tank_for_peer(peer_id: String) -> void:
-	if not multiplayer.is_server():
-		return
-
+	if not multiplayer.is_server(): return
 	var tank = tanks_map.get(peer_id)
-	if tank:
-		tanks_map.erase(peer_id)
-		# Remove the tank from the scene
-		tank.queue_free()
-		print("Despawned tank for peer: ", peer_id)
+	if not tank: return
+	tanks_map.erase(peer_id)
+	tank.queue_free()
+	print("Despawned tank for peer: ", peer_id)
 
 func get_spawn_position() -> Vector2:
-	# Simple spawn positioning - you can make this more sophisticated
 	var spawn_positions = [
 		Vector2(100, 100),
 		Vector2(200, 100),
@@ -140,7 +129,6 @@ func get_spawn_position() -> Vector2:
 	var index = tanks_map.size() % spawn_positions.size()
 	return spawn_positions[index]
 
-# Function to spawn tank for server/host player
 func spawn_tank_for_server() -> void:
 	if multiplayer.is_server() and my_id != "":
 		spawn_tank_for_peer(my_id)
