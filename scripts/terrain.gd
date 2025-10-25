@@ -1,6 +1,8 @@
 class_name Terrain
 extends Node2D
 
+@onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
+
 var _colors = ["1blue", "2green", "3red", "4sand"]
 var _tank_scene = load("res://scenes/tank.tscn")
 var peer_data: Dictionary[String, PeerData]
@@ -12,12 +14,18 @@ func _ready() -> void:
 
 func add_tank(id: String):
 	var t: Tank = _tank_scene.instantiate()
+	t.name = id # RELEVANT
+	
 	t.position.x = randf() * 300
 	t.position.y = randf() * 300
-	add_child(t)
+	#add_child(t)
 	var nth = peer_data.size()
 	t.set_theme(_colors[nth - 1])
 	tanks_map.set(id, t)
+	
+	#spawner.add_child(t)
+	spawner.get_node(spawner.spawn_path).call_deferred("add_child", t)
+	#get_node(spawner.spawn_path).call_deferred("add_child", t)
 
 func remove_tank(id: String):
 	var t = tanks_map.get(id)

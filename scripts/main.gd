@@ -32,13 +32,14 @@ func _on_session_joined():
 	peer_data.set(id, PeerData.new())
 	print("assigning myid: ", id)
 	print("peer_data: ", str(peer_data))
-	terrain.add_tank(id) # TODO TEMP
+	#terrain.add_tank(id) # TODO TEMP
 
 func _on_peer_connected(_id):
 	var id = str(_id)
 	print("_on_peer_connected: ", id)
 	peer_data.set(id, PeerData.new())
-	terrain.add_tank(id) # TODO TEMP
+	if multiplayer.is_server():
+		terrain.add_tank(id) # TODO TEMP
 
 func _on_peer_disconnected(id):
 	terrain.remove_tank(str(id))
