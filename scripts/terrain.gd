@@ -6,9 +6,14 @@ extends Node2D
 var _themes = ["1blue", "2green", "3red", "4sand"]
 var peer_data: Dictionary[String, PeerData]
 var tanks_map: Dictionary[String, Tank]
+var bullets: Array[Bullet] = []
 var my_id: String
 var _tank_scene = load("res://scenes/tank.tscn")
-const SPEED: float = 50
+var _bullet_scene = load("res://scenes/bullet.tscn")
+const TANK_SPEED: float = 80
+const TANK_R_SPEED: float = 5
+const BULLET_SPEED: float = 8
+const BULLET_LIFE: float = 3
 
 func _ready() -> void:
 	spawner.spawn_function = _custom_spawn_function
@@ -18,56 +23,93 @@ func _ready() -> void:
 func _input(ev: InputEvent) -> void:
 	#if not ev.is_action_type() == InputEventAction: return
 	
-	if my_id == "": return
-	var pd: PeerData = PeerData.new() #peer_data.get(my_id)
-	if pd == null: return
-	
 	if ev.is_action_pressed("up"):
-		pd.dy = -1
-	elif ev.is_action_released("up"):
-		pd.dy = 0
+		send_move_dir.rpc(0, -1)
 	elif ev.is_action_pressed("down"):
-		pd.dy = 1
-	elif ev.is_action_released("down"):
-		pd.dy = 0
+		send_move_dir.rpc(0, 1)
 	elif ev.is_action_pressed("left"):
-		pd.dx = -1
-	elif ev.is_action_released("left"):
-		pd.dx = 0
+		send_move_dir.rpc(-1, 0)
 	elif ev.is_action_pressed("right"):
-		pd.dx = 1
-	elif ev.is_action_released("right"):
-		pd.dx = 0
+		send_move_dir.rpc(1, 0)
+		
+	elif ev.is_action_pressed("rotate_left"):
+		send_rot.rpc(-1)
+	elif ev.is_action_released("rotate_left"):
+		send_rot.rpc(0)
+	elif ev.is_action_pressed("rotate_right"):
+		send_rot.rpc(1)
+	elif ev.is_action_released("rotate_right"):
+		send_rot.rpc(0)
+		
+		
 	elif ev.is_action_pressed("fire"):
-		#print("FIRE!") # TODO
-		return
-	else:
-		return
-	#print(pd)
-	send_inputs.rpc(pd.dx, pd.dy)
+		send_fire.rpc()
 
 @rpc("any_peer", "call_local", "reliable")
-func send_inputs(dx: float, dy: float):
+func send_move_dir(dx: float, dy: float):
 	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
 	pd.dx = dx
 	pd.dy = dy
 
+@rpc("any_peer", "call_local", "reliable")
+func send_rot(dr: float):
+	var id = str(multiplayer.get_remote_sender_id())
+	var pd: PeerData = peer_data.get(id)
+	if pd == null: return
+	pd.dr = dr
+
+@rpc("any_peer", "call_local", "reliable")
+func send_fire():
+	if not multiplayer.is_server(): return
+
+	var id = str(multiplayer.get_remote_sender_id())
+	var pd: PeerData = peer_data.get(id)
+	if pd == null: return
+	var t: Tank = tanks_map.get(id)
+	if t == null: return
+
+	var b_rot = t.get_barrel_rotation() - PI / 2
+	var p = Vector2(t.position)
+	var b_dir = Vector2.from_angle(b_rot)
+	p += b_dir * BULLET_SPEED * 3
+
+	var bullet_spawn_data = {
+		"type": "bullet",
+		"owner_id": id,
+		"pos": p,
+		"dir": b_dir,
+		"rotation": b_rot
+	}
+	var bullet = spawner.spawn(bullet_spawn_data)
+	if bullet:print("Spawned bullet for peer ", id, " at ", p)
+
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server(): return
 
+	var bullets_to_remove = []
+	for bu in bullets:
+		bu.time_left -= delta
+		var d_pos = bu.dir * BULLET_SPEED
+		bu.position += d_pos
+		if bu.time_left < 0: bullets_to_remove.append(bu)
+
+	for bu in bullets_to_remove:
+		bullets.erase(bu)
+		bu.queue_free()
+		
 	for id in tanks_map:
 		var t: Tank = tanks_map.get(id)
-		if t == null:
-			print("early abort from process")
-			return
+		if t == null: return
 		var pd: PeerData = peer_data.get(id)
 		if t != null and pd != null:
-			var dx = pd.dx * delta * SPEED
-			var dy = pd.dy * delta * SPEED
+			var dx = pd.dx * delta * TANK_SPEED
+			var dy = pd.dy * delta * TANK_SPEED
+			var dr = pd.dr * delta * TANK_R_SPEED
 			t.position.x += dx
 			t.position.y += dy
+			t.rotate_barrel(t.get_barrel_rotation() + dr)
 
 func _on_peer_connected(id: int) -> void:
 	print("Terrain: Peer connected: ", id)
@@ -78,17 +120,27 @@ func _on_peer_disconnected(id: int) -> void:
 	if multiplayer.is_server(): despawn_tank_for_peer(str(id))
 
 func _custom_spawn_function(spawn_data: Variant) -> Node:
-	var tank = _tank_scene.instantiate()
 	if spawn_data is Dictionary:
 		var data = spawn_data as Dictionary
-		if data.has("peer_id"):
-			tank.peer_id = data["peer_id"]
-			tank.name = "Tank_" + data["peer_id"]
-		if data.has("pos"):
-			tank.position = data["pos"]
-		if data.has("theme"):
-			tank.set_theme(data["theme"])
-	return tank
+
+		if data.has("type") and data["type"] == "tank":
+			var tank = _tank_scene.instantiate()
+			if data.has("peer_id"): tank.peer_id = data["peer_id"]
+			if data.has("pos"):     tank.position = data["pos"]
+			if data.has("theme"):   tank.set_theme(data["theme"])
+			return tank
+
+		elif data.has("type") and data["type"] == "bullet":
+			var bullet = _bullet_scene.instantiate()
+			if data.has("owner_id"): bullet.owner_id = data["owner_id"]
+			if data.has("pos"):      bullet.position = data["pos"]
+			if data.has("dir"):      bullet.dir = data["dir"]
+			if data.has("rotation"): bullet.rotation = data["rotation"]
+			bullet.time_left = BULLET_LIFE
+			bullets.append(bullet)
+			return bullet
+
+	return null
 
 func spawn_tank_for_peer(peer_id: String) -> void:
 	if not multiplayer.is_server(): return
@@ -101,6 +153,7 @@ func spawn_tank_for_peer(peer_id: String) -> void:
 	var pos = get_spawn_position()
 
 	var spawn_data = {
+		"type": "tank",
 		"peer_id": peer_id,
 		"theme": theme,
 		"pos": pos

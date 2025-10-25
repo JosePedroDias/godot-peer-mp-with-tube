@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://4uufnii5g2di"]
+[gd_scene load_steps=6 format=3 uid="uid://4uufnii5g2di"]
 
 [ext_resource type="Script" uid="uid://jtx5iek7w4n" path="res://scripts/tank.gd" id="1_01nm4"]
 [ext_resource type="Texture2D" uid="uid://b2tax0gkmja0y" path="res://textures/tanks/1blue/bodyo.png" id="1_c4xvs"]
@@ -11,6 +11,12 @@ size = Vector2(40, 40)
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("TBarrel:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("TBody:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [node name="Tank" type="StaticBody2D"]
 script = ExtResource("1_01nm4")
@@ -18,7 +24,7 @@ script = ExtResource("1_01nm4")
 [node name="TBody" type="Sprite2D" parent="."]
 texture = ExtResource("1_c4xvs")
 
-[node name="TBarrel" type="Sprite2D" parent="TBody"]
+[node name="TBarrel" type="Sprite2D" parent="."]
 texture = ExtResource("2_01nm4")
 offset = Vector2(0, -10)
 
