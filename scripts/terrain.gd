@@ -28,7 +28,7 @@ func _input(ev: InputEvent) -> void:
 	#if not ev.is_action_type() == InputEventAction: return
 	
 	if my_id == "": return
-	var pd: PeerData = peer_data.get(my_id)
+	var pd: PeerData = PeerData.new() #peer_data.get(my_id)
 	if pd == null: return
 	
 	if ev.is_action_pressed("up"):
@@ -52,11 +52,12 @@ func _input(ev: InputEvent) -> void:
 		return
 	else:
 		return
+	send_inputs.rpc(pd.dx, pd.dy)
 	#print(pd)
 
 @rpc("any_peer", "call_local", "reliable")
-func send_inputs(_id, dx: float, dy: float):
-	var id = str(_id)
+func send_inputs(dx: float, dy: float):
+	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
 	pd.dx = dx
