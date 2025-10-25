@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://o2874ep7w4k0"]
+
+[ext_resource type="Script" uid="uid://cy006uvidc4y" path="res://addons/tube/tube_client.gd" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://6q1ugyni3lac" path="res://scripts/main.gd" id="1_sugp2"]
+[ext_resource type="Resource" uid="uid://o43e1s42wa3u" path="res://tubectx.tres" id="2_0wfyh"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_sugp2")
+
+[node name="TubeClient" type="Node" parent="."]
+script = ExtResource("1_0wfyh")
+context = ExtResource("2_0wfyh")
+metadata/_custom_type_script = "uid://cy006uvidc4y"
+
+[node name="ServeLabel" type="Label" parent="."]
+offset_left = 116.0
+offset_top = 7.0
+offset_right = 286.0
+offset_bottom = 41.0
+theme_override_font_sizes/font_size = 24
+
+[node name="ServeButton" type="Button" parent="."]
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 99.0
+offset_bottom = 41.0
+theme_override_font_sizes/font_size = 20
+text = "serve"
+
+[node name="JoinButton" type="Button" parent="."]
+offset_left = 11.0
+offset_top = 57.0
+offset_right = 100.0
+offset_bottom = 93.0
+theme_override_font_sizes/font_size = 20
+text = "join"
+
+[node name="ClientLineEdit" type="LineEdit" parent="."]
+offset_left = 112.0
+offset_top = 56.0
+offset_right = 283.0
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 24
+
+[node name="SendButton" type="Button" parent="."]
+offset_left = 12.0
+offset_top = 110.0
+offset_right = 101.0
+offset_bottom = 146.0
+theme_override_font_sizes/font_size = 20
+text = "send"
+
+[node name="SendLineEdit" type="LineEdit" parent="."]
+offset_left = 113.0
+offset_top = 109.0
+offset_right = 846.0
+offset_bottom = 151.0
+theme_override_font_sizes/font_size = 24
+
+[node name="LogLabel" type="Label" parent="."]
+offset_left = 13.0
+offset_top = 160.0
+offset_right = 846.0
+offset_bottom = 484.0
+theme_override_font_sizes/font_size = 24

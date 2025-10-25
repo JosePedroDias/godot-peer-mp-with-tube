@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TubeContext" load_steps=2 format=3 uid="uid://o43e1s42wa3u"]
+
+[ext_resource type="Script" uid="uid://t4pe7yqc3pnt" path="res://addons/tube/tube_context.gd" id="1_7574n"]
+
+[resource]
+resource_local_to_scene = true
+resource_name = "tubectx"
+script = ExtResource("1_7574n")
+app_id = "Zmsrt3ef2b92EvV"
+trackers_urls = Array[String](["wss://tracker.openwebtorrent.com", "wss://tracker.files.fm:7073/announce", "wss://tracker.btorrent.xyz/", "wss://tracker.ghostchu-services.top:443/announce"])
+stun_servers_urls = Array[String](["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"])
+metadata/_custom_type_script = "uid://t4pe7yqc3pnt"
