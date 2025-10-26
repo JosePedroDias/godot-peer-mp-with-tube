@@ -22,33 +22,35 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 func _input(ev: InputEvent) -> void:
-	#if not ev.is_action_type() == InputEventAction: return
+	if my_id.length() == 0: return
 	
-	var dx: float = 0
-	var dy: float = 0
+	var pd: PeerData = peer_data.get(my_id)
+	if pd == null: return
+	
+	var dx: float = pd.dx
+	var dy: float = pd.dy
 	
 	if ev.is_action_pressed("up"): dy = -1
 	elif ev.is_action_released("up"): dy = 0
 	
-	elif ev.is_action_pressed("down"): dy = 1
+	if ev.is_action_pressed("down"): dy = 1
 	elif ev.is_action_released("down"): dy = 0
 	
-	elif ev.is_action_pressed("left"): dx = -1
+	if ev.is_action_pressed("left"): dx = -1
 	elif ev.is_action_released("left"): dx = 0
 	
-	elif ev.is_action_pressed("right"): dx = 1
+	if ev.is_action_pressed("right"): dx = 1
 	elif ev.is_action_released("right"): dx = 0
 	
-	elif ev.is_action_pressed("rotate_left"): return send_rot.rpc(-1)
-	elif ev.is_action_released("rotate_left"): return send_rot.rpc(0)
-	elif ev.is_action_pressed("rotate_right"): return send_rot.rpc(1)
-	elif ev.is_action_released("rotate_right"): return send_rot.rpc(0)
+	if ev.is_action_pressed("rotate_left"): send_rot.rpc(-1)
+	elif ev.is_action_released("rotate_left"): send_rot.rpc(0)
+	
+	if ev.is_action_pressed("rotate_right"): send_rot.rpc(1)
+	elif ev.is_action_released("rotate_right"): send_rot.rpc(0)
 		
-	elif ev.is_action_pressed("fire"): return send_fire.rpc()
+	if ev.is_action_pressed("fire"): return send_fire.rpc()
 	
-	else: return
-	
-	send_move_dir.rpc(dx, dy)
+	if pd.dx != dx or pd.dy != dy: send_move_dir.rpc(dx, dy)
 
 @rpc("any_peer", "call_local", "reliable")
 func send_move_dir(dx: float, dy: float):
