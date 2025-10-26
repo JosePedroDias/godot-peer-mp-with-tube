@@ -1,4 +1,3 @@
-- change tank movement?
 - display explosion fx
 - display barrel fire fx
 - tank/tank sfx

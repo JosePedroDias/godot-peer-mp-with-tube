@@ -12,7 +12,8 @@ var _tank_scene = load("res://scenes/tank.tscn")
 var _bullet_scene = load("res://scenes/bullet.tscn")
 
 const TANK_SPEED: float = 80
-const TANK_R_SPEED: float = 5
+const BODY_R_SPEED: float = 5/4
+const BARREL_R_SPEED: float = 5
 const BULLET_SPEED: float = 8
 const BULLET_LIFE: float = 3
 
@@ -27,45 +28,46 @@ func _input(ev: InputEvent) -> void:
 	var pd: PeerData = peer_data.get(my_id)
 	if pd == null: return
 	
-	var dx: float = pd.dx
-	var dy: float = pd.dy
+	if ev.is_action_pressed("up"): send_thrust.rpc(1)
+	elif ev.is_action_released("up"): send_thrust.rpc(0)
 	
-	if ev.is_action_pressed("up"): dy = -1
-	elif ev.is_action_released("up"): dy = 0
+	if ev.is_action_pressed("down"): send_thrust.rpc(-1)
+	elif ev.is_action_released("down"): send_thrust.rpc(0)
 	
-	if ev.is_action_pressed("down"): dy = 1
-	elif ev.is_action_released("down"): dy = 0
+	if ev.is_action_pressed("left"): send_body_drot.rpc(-1)
+	elif ev.is_action_released("left"): send_body_drot.rpc(0)
 	
-	if ev.is_action_pressed("left"): dx = -1
-	elif ev.is_action_released("left"): dx = 0
+	if ev.is_action_pressed("right"): send_body_drot.rpc(1)
+	elif ev.is_action_released("right"): send_body_drot.rpc(0)
 	
-	if ev.is_action_pressed("right"): dx = 1
-	elif ev.is_action_released("right"): dx = 0
+	if ev.is_action_pressed("rotate_left"): send_barrel_rot.rpc(-1)
+	elif ev.is_action_released("rotate_left"): send_barrel_rot.rpc(0)
 	
-	if ev.is_action_pressed("rotate_left"): send_rot.rpc(-1)
-	elif ev.is_action_released("rotate_left"): send_rot.rpc(0)
-	
-	if ev.is_action_pressed("rotate_right"): send_rot.rpc(1)
-	elif ev.is_action_released("rotate_right"): send_rot.rpc(0)
+	if ev.is_action_pressed("rotate_right"): send_barrel_rot.rpc(1)
+	elif ev.is_action_released("rotate_right"): send_barrel_rot.rpc(0)
 		
 	if ev.is_action_pressed("fire"): return send_fire.rpc()
+
+@rpc("any_peer", "call_local", "reliable")
+func send_thrust(thrust: float):
+	var id = str(multiplayer.get_remote_sender_id())
+	var pd: PeerData = peer_data.get(id)
+	if pd == null: return
+	pd.thrust = thrust
 	
-	if pd.dx != dx or pd.dy != dy: send_move_dir.rpc(dx, dy)
-
 @rpc("any_peer", "call_local", "reliable")
-func send_move_dir(dx: float, dy: float):
+func send_body_drot(body_drot: float):
 	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
-	pd.dx = dx
-	pd.dy = dy
+	pd.body_drot = body_drot
 
 @rpc("any_peer", "call_local", "reliable")
-func send_rot(dr: float):
+func send_barrel_rot(barrel_drot: float):
 	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
-	pd.dr = dr
+	pd.barrel_drot = barrel_drot
 
 @rpc("any_peer", "call_local", "reliable")
 func send_fire():
@@ -116,16 +118,12 @@ func _physics_process(delta: float) -> void:
 		if t == null: return
 		var pd: PeerData = peer_data.get(id)
 		if t != null and pd != null:
-			var dx = pd.dx * delta * TANK_SPEED
-			var dy = pd.dy * delta * TANK_SPEED
-			var dr = pd.dr * delta * TANK_R_SPEED
-
-			var motion = Vector2(dx, dy)
-			if motion.length() > 0:
-				var collision = t.move_and_collide(motion)
-				if collision:
-					print("Tank ", id, " collision detected")
-			t.rotate_barrel(t.get_barrel_rotation() + dr)
+			if pd.body_drot != 0:
+				t.rotate_body(pd.body_drot * delta * BODY_R_SPEED)
+			if pd.barrel_drot != 0:
+				t.rotate_barrel(pd.barrel_drot * delta * BARREL_R_SPEED)
+			if pd.thrust != 0:
+				t.move_forward(pd.thrust * delta * TANK_SPEED)
 
 func _on_peer_connected(id: int) -> void:
 	print("Terrain: Peer connected: ", id)
@@ -198,10 +196,7 @@ func spawn_tank_for_server() -> void:
 		spawn_tank_for_peer(my_id)
 
 func apply_tank_damage(id: String, energy_to_remove: float) -> void:
-	var pd: PeerData = peer_data.get(id)
-	if pd == null: return
-	pd.energy_left = max(0, pd.energy_left - energy_to_remove)
-	print("tank " + id + "'s energy: ", pd.energy_left)
-	var tank: Tank = tanks_map.get(id)
-	if tank:
-		tank.set_health(pd.energy_left)
+	var t: Tank = tanks_map.get(id)
+	if t == null: return
+	t.remove_health(energy_to_remove)
+	print("tank " + id + "'s energy: ", str(t.energy))

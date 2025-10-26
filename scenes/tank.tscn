@@ -28,6 +28,7 @@ collision_mask = 2
 script = ExtResource("1_01nm4")
 
 [node name="TBody" type="Sprite2D" parent="."]
+rotation = 3.1415927
 texture = ExtResource("1_c4xvs")
 
 [node name="TBarrel" type="Sprite2D" parent="."]
