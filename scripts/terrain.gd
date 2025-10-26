@@ -75,7 +75,7 @@ func send_fire():
 	var b_dir = Vector2.from_angle(b_rot)
 	p += b_dir * BULLET_SPEED * 3
 
-	var bullet = spawner.spawn({
+	spawner.spawn({
 		"type": "bullet",
 		"owner_id": id,
 		"pos": p,
@@ -83,7 +83,6 @@ func send_fire():
 		"rotation": b_rot,
 		"terrain": self
 	})
-	#if bullet: print("Spawned bullet for peer ", id, " at ", p)
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server(): return
@@ -136,7 +135,7 @@ func _custom_spawn_function(spawn_data: Variant) -> Node:
 			var tank = _tank_scene.instantiate()
 			if data.has("peer_id"): tank.peer_id = data["peer_id"]
 			if data.has("pos"):     tank.position = data["pos"]
-			if data.has("theme"):   tank.set_theme(data["theme"])
+			if data.has("theme"):   tank.theme = data["theme"]
 			return tank
 		elif data.has("type") and data["type"] == "bullet":
 			var bullet = _bullet_scene.instantiate()
@@ -168,7 +167,6 @@ func spawn_tank_for_peer(peer_id: String) -> void:
 	})
 	if not tank: return
 	tanks_map[peer_id] = tank
-	#print("Spawned tank for peer ", peer_id, " with thene ", theme, " at ", pos)
 
 func despawn_tank_for_peer(peer_id: String) -> void:
 	if not multiplayer.is_server(): return

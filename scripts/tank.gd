@@ -10,8 +10,12 @@ const MAX_HEALTH_PIXELS:float = 40
 
 var barrel_rot: float = 0
 var peer_id: String = ""
+var theme: String = ""
 
-func set_theme(th: String) -> void:
+func _ready() -> void:
+	if theme.length() > 0: _set_theme(theme)
+
+func _set_theme(th: String) -> void:
 	body_spr.texture = load("res://textures/tanks/" + th + "/bodyo.png")
 	barrel_spr.texture = load("res://textures/tanks/" + th + "/b1o.png")
 

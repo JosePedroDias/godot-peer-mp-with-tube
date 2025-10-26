@@ -1,4 +1,3 @@
-- fix tank colors (all blue now)
 - change tank movement?
 - display explosion fx
 - display barrel fire fx
