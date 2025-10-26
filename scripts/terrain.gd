@@ -197,3 +197,6 @@ func apply_tank_damage(id: String, energy_to_remove: float) -> void:
 	if pd == null: return
 	pd.energy_left = max(0, pd.energy_left - energy_to_remove)
 	print("tank " + id + "'s energy: ", pd.energy_left)
+	var tank: Tank = tanks_map.get(id)
+	if tank:
+		tank.set_health(pd.energy_left)

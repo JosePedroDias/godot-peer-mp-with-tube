@@ -3,6 +3,10 @@ extends CharacterBody2D
 
 @onready var body_spr: Sprite2D = $TBody
 @onready var barrel_spr: Sprite2D = $TBarrel
+@onready var health_bar_rect: ColorRect = $HealthPnl/HealthBarRect
+
+const MAX_HEALTH:float = 100
+const MAX_HEALTH_PIXELS:float = 40
 
 var barrel_rot: float = 0
 var peer_id: String = ""
@@ -19,3 +23,6 @@ func rotate_barrel(r: float) -> void:
 	
 func get_barrel_rotation() -> float:
 	return barrel_spr.rotation
+
+func set_health(h: float) -> void:
+	health_bar_rect.size.x = h / MAX_HEALTH * MAX_HEALTH_PIXELS
