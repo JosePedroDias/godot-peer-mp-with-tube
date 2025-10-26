@@ -24,26 +24,31 @@ func _ready() -> void:
 func _input(ev: InputEvent) -> void:
 	#if not ev.is_action_type() == InputEventAction: return
 	
-	if ev.is_action_pressed("up"):
-		send_move_dir.rpc(0, -1)
-	elif ev.is_action_pressed("down"):
-		send_move_dir.rpc(0, 1)
-	elif ev.is_action_pressed("left"):
-		send_move_dir.rpc(-1, 0)
-	elif ev.is_action_pressed("right"):
-		send_move_dir.rpc(1, 0)
+	var dx: float = 0
+	var dy: float = 0
+	
+	if ev.is_action_pressed("up"): dy = -1
+	elif ev.is_action_released("up"): dy = 0
+	
+	elif ev.is_action_pressed("down"): dy = 1
+	elif ev.is_action_released("down"): dy = 0
+	
+	elif ev.is_action_pressed("left"): dx = -1
+	elif ev.is_action_released("left"): dx = 0
+	
+	elif ev.is_action_pressed("right"): dx = 1
+	elif ev.is_action_released("right"): dx = 0
+	
+	elif ev.is_action_pressed("rotate_left"): return send_rot.rpc(-1)
+	elif ev.is_action_released("rotate_left"): return send_rot.rpc(0)
+	elif ev.is_action_pressed("rotate_right"): return send_rot.rpc(1)
+	elif ev.is_action_released("rotate_right"): return send_rot.rpc(0)
 		
-	elif ev.is_action_pressed("rotate_left"):
-		send_rot.rpc(-1)
-	elif ev.is_action_released("rotate_left"):
-		send_rot.rpc(0)
-	elif ev.is_action_pressed("rotate_right"):
-		send_rot.rpc(1)
-	elif ev.is_action_released("rotate_right"):
-		send_rot.rpc(0)
-		
-	elif ev.is_action_pressed("fire"):
-		send_fire.rpc()
+	elif ev.is_action_pressed("fire"): return send_fire.rpc()
+	
+	else: return
+	
+	send_move_dir.rpc(dx, dy)
 
 @rpc("any_peer", "call_local", "reliable")
 func send_move_dir(dx: float, dy: float):
