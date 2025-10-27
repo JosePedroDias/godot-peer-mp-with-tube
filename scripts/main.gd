@@ -20,7 +20,7 @@ func _on_session_created():
 	print("_on_session_created: ", id)
 	terrain.my_id = id
 	peer_data.set(id, PeerData.new())
-	print("assigning myid: ", id)
+	print("assigning my_id: ", id)
 	print("peer_data: ", str(peer_data))
 	terrain.spawn_tank_for_server()
 
@@ -30,7 +30,7 @@ func _on_session_joined():
 	if terrain.my_id.length() > 0: return
 	terrain.my_id = id
 	peer_data.set(id, PeerData.new())
-	print("assigning myid: ", id)
+	print("assigning my_id: ", id)
 	print("peer_data: ", str(peer_data))
 
 func _on_peer_connected(_id):

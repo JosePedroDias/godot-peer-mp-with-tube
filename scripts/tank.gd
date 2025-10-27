@@ -7,7 +7,11 @@ extends CharacterBody2D
 
 const MAX_HEALTH:float = 100
 const MAX_HEALTH_PIXELS:float = 40
+const SPEED: float = 80
+const BODY_R_SPEED: float = 1.2
+const BARREL_R_SPEED: float = 5
 const NINETY_RAD: float = PI / 2
+const THEMES: Array[String] = ["1blue", "2green", "3red", "4sand"]
 
 var peer_id: String = ""
 var theme: String = ""
@@ -24,8 +28,8 @@ func move_forward(vel: float) -> void:
 	var d_pos = Vector2.from_angle(body_spr.rotation + NINETY_RAD) * vel
 	move_and_collide(d_pos)
 
-func rotate_body(dr: float) -> void:
-	body_spr.rotation += dr
+func rotate_body(dr: float, vel: float) -> void:
+	body_spr.rotation += dr * vel
 
 func rotate_barrel(dr: float) -> void:
 	barrel_spr.rotation += dr
