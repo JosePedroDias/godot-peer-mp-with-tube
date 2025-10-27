@@ -46,28 +46,28 @@ func _input(ev: InputEvent) -> void:
 	if ev.is_action_pressed("fire"): return send_fire.rpc()
 
 @rpc("any_peer", "call_local", "reliable")
-func send_thrust(thrust: float):
+func send_thrust(thrust: float) -> void:
 	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
 	pd.thrust = thrust
 	
 @rpc("any_peer", "call_local", "reliable")
-func send_body_drot(body_drot: float):
+func send_body_drot(body_drot: float) -> void:
 	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
 	pd.body_drot = body_drot
 
 @rpc("any_peer", "call_local", "reliable")
-func send_barrel_rot(barrel_drot: float):
+func send_barrel_rot(barrel_drot: float) -> void:
 	var id = str(multiplayer.get_remote_sender_id())
 	var pd: PeerData = peer_data.get(id)
 	if pd == null: return
 	pd.barrel_drot = barrel_drot
 
 @rpc("any_peer", "call_local", "reliable")
-func send_fire():
+func send_fire() -> void:
 	var id = str(multiplayer.get_remote_sender_id())
 	if multiplayer.is_server(): _spawn_sys.spawn_bullet(id)
 

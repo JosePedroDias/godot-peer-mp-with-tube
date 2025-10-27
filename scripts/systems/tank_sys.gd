@@ -18,6 +18,9 @@ func process(delta: float) -> void:
 	for id in _tanks_map:
 		var t: Tank = _tanks_map.get(id)
 		if t == null: return
+		if t.energy <= 0:
+			_terrain._spawn_sys.despawn_tank(t.peer_id)
+			return
 		var pd: PeerData = _terrain.peer_data.get(id)
 		if t != null and pd != null:
 			var vel: float = pd.thrust * delta * Tank.SPEED

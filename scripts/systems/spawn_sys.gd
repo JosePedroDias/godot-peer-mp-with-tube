@@ -10,27 +10,21 @@ func _init(terr: Terrain) -> void:
 	
 func assign_spawner() -> void:
 	_terrain.spawner.spawn_function = _custom_spawn_function
-	
-func spawn_tank(peer_id: String) -> void:
-	if _terrain._tank_sys.has_tank(peer_id):
-		print("Tank already exists for peer: ", peer_id)
-		return
 
-	var tank = _terrain.spawner.spawn({
+func spawn_tank(peer_id: String) -> void:
+	_terrain.spawner.spawn({
 		"type": "tank",
 		"peer_id": peer_id,
 		"theme": _terrain._tank_sys.get_theme(),
 		"pos": _terrain._tank_sys.get_spawn_position()
 	})
-	if not tank: return
-	_terrain._tank_sys.set_tank(peer_id, tank)
 	
 func despawn_tank(peer_id: String) -> void:
 	var tank = _terrain._tank_sys.get_tank(peer_id)
 	if not tank: return
 	_terrain._tank_sys.erase_tank(peer_id)
 	tank.queue_free()
-	print("Despawned tank for peer: ", peer_id)
+	#print("Despawned tank for peer: ", peer_id)
 
 func spawn_bullet(id: String) -> void:
 	var pd: PeerData = _terrain.peer_data.get(id)
@@ -43,7 +37,7 @@ func spawn_bullet(id: String) -> void:
 	var b_dir = Vector2.from_angle(b_rot)
 	p += b_dir * Bullet.SPEED * 3
 
-	var bullet = _terrain.spawner.spawn({
+	_terrain.spawner.spawn({
 		"type": "bullet",
 		"owner_id": id,
 		"pos": p,
@@ -51,26 +45,24 @@ func spawn_bullet(id: String) -> void:
 		"rotation": b_rot,
 		"terrain": _terrain
 	})
-	if not bullet: return
-	_terrain._bullet_sys.add_bullet(bullet)
 
 func _custom_spawn_function(d: Variant) -> Node:
-	if d is Dictionary:
+	if d is Dictionary and d.has("type"):
 		var data = d as Dictionary
-		if data.has("type") and data["type"] == "tank":
+		if data["type"] == "tank":
 			var tank = _tank_scene.instantiate()
-			if data.has("peer_id"): tank.peer_id = data["peer_id"]
+			if data.has("peer_id"): tank.peer_id  = data["peer_id"]
+			if data.has("theme"):   tank.theme    = data["theme"]
 			if data.has("pos"):     tank.position = data["pos"]
-			if data.has("theme"):   tank.theme = data["theme"]
 			_terrain._tank_sys.set_tank(tank.peer_id, tank)
 			return tank
-		elif data.has("type") and data["type"] == "bullet":
+		elif data["type"] == "bullet":
 			var bullet = _bullet_scene.instantiate()
 			if data.has("owner_id"): bullet.owner_id = data["owner_id"]
-			if data.has("pos"):      bullet.position = data["pos"]
-			if data.has("dir"):      bullet.dir = data["dir"]
-			if data.has("rotation"): bullet.rotation = data["rotation"]
+			if data.has("dir"):      bullet.dir      = data["dir"]
 			if data.has("terrain"):  bullet._terrain = data["terrain"]
+			if data.has("pos"):      bullet.position = data["pos"]
+			if data.has("rotation"): bullet.rotation = data["rotation"]
 			_terrain._bullet_sys.add_bullet(bullet)
 			return bullet
 	return null
