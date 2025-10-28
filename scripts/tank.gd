@@ -11,6 +11,7 @@ const FW_SPEED: float = 130
 const BW_SPEED: float = 80
 const BODY_R_SPEED: float = 1.2
 const BARREL_R_SPEED: float = 5
+const TRACKS_MIN_DIST: float = 40.0
 const NINETY_RAD: float = PI / 2
 const THEMES: Array[String] = ["1blue", "2green", "3red", "4sand"]
 
@@ -29,13 +30,16 @@ func move_forward(vel: float) -> void:
 	var d_pos = Vector2.from_angle(body_spr.rotation + NINETY_RAD) * vel
 	move_and_collide(d_pos)
 
-func rotate_body(dr: float, vel: float) -> float:
+func rotate_body(dr: float, vel: float = 1.0) -> float:
 	var res = dr * vel
 	body_spr.rotation += res
 	return res
 
 func rotate_barrel(dr: float) -> void:
 	barrel_spr.rotation += dr
+
+func get_body_rotation() -> float:
+	return body_spr.rotation
 	
 func get_barrel_rotation() -> float:
 	return barrel_spr.rotation

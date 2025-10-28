@@ -69,7 +69,11 @@ func send_barrel_rot(barrel_drot: float) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func send_fire() -> void:
 	var id = str(multiplayer.get_remote_sender_id())
-	if multiplayer.is_server(): _spawn_sys.spawn_bullet(id)
+	if multiplayer.is_server():
+		_spawn_sys.spawn_bullet(id)
+		var tank = _tank_sys.get_tank(id)
+		if tank == null: return
+		_spawn_sys.spawn_fire(tank.position, tank.get_barrel_rotation())
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server(): return

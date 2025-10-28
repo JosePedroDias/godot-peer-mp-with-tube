@@ -9,6 +9,8 @@ var _barrel_drot_buf: Array[float] = [0]
 var _last_thrust: float = 0
 var _last_barrel_drot: float = 0
 
+var last_tracks_pos: Vector2 = Vector2.ZERO
+
 var thrust: float = 0: # forward
 	get:
 		var v: float = 0

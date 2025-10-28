@@ -61,3 +61,4 @@ rotate_right={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.28129858, 0.39182338, 0.32890525, 1)

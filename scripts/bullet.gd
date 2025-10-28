@@ -21,6 +21,8 @@ func _on_body_entered(body: Node2D) -> void:
 			time_left = 0
 			if _terrain != null: 
 				tank.remove_health(10)
+				_terrain._spawn_sys.spawn_explosion(position)
+				queue_free()
 				#print("tank " + tank.peer_id + "'s energy: ", str(tank.energy))
 
 func _to_string() -> String:

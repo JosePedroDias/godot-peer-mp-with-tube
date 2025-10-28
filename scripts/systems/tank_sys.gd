@@ -34,6 +34,10 @@ func process(delta: float) -> void:
 				t.rotate_barrel(pd.barrel_drot * delta * Tank.BARREL_R_SPEED)
 			if pd.thrust != 0:
 				t.move_forward(vel)
+				var dist: float = pd.last_tracks_pos.distance_to(t.position)
+				if dist > Tank.TRACKS_MIN_DIST:
+					_terrain._spawn_sys.spawn_tracks(t.position, t.get_body_rotation())
+					pd.last_tracks_pos = Vector2(t.position)
 
 func get_theme() -> String:
 	return Tank.THEMES[ _tanks_map.size() % Tank.THEMES.size() ]

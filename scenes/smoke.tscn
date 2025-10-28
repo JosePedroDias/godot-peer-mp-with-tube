@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4dc3nblh8og1"]
+
+[ext_resource type="Texture2D" uid="uid://5utm4h27r0yr" path="res://textures/fx/explosionSmoke5.png" id="1_acmqr"]
+[ext_resource type="Script" uid="uid://cqhekxjlx52gh" path="res://scripts/smoke.gd" id="2_rx0m8"]
+
+[node name="Smoke" type="Sprite2D"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_acmqr")
+script = ExtResource("2_rx0m8")

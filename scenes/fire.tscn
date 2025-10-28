@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dq7qqqwv1yff0"]
+
+[ext_resource type="Texture2D" uid="uid://byx6tmax00owq" path="res://textures/fx/shotOrange.png" id="1_52nqi"]
+[ext_resource type="Script" uid="uid://davxp25c7ns38" path="res://scripts/fire.gd" id="2_xqmqg"]
+
+[node name="Fire" type="Sprite2D"]
+texture = ExtResource("1_52nqi")
+offset = Vector2(0, -30)
+flip_v = true
+script = ExtResource("2_xqmqg")
