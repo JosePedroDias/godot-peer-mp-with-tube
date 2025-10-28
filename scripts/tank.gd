@@ -7,8 +7,8 @@ extends CharacterBody2D
 
 const MAX_HEALTH:float = 100
 const MAX_HEALTH_PIXELS:float = 40
-const FW_SPEED: float = 80
-const BW_SPEED: float = 50
+const FW_SPEED: float = 130
+const BW_SPEED: float = 80
 const BODY_R_SPEED: float = 1.2
 const BARREL_R_SPEED: float = 5
 const NINETY_RAD: float = PI / 2

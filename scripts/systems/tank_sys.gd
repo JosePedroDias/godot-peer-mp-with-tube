@@ -25,6 +25,7 @@ func process(delta: float) -> void:
 			return
 		var pd: PeerData = _terrain.peer_data.get(id)
 		if t != null and pd != null:
+			pd.bump()
 			var vel: float = pd.thrust * delta * (Tank.FW_SPEED if pd.thrust > 0 else Tank.BW_SPEED)
 			if pd.body_drot != 0:
 				var r = t.rotate_body(pd.body_drot * delta * Tank.BODY_R_SPEED, vel)
