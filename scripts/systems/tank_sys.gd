@@ -4,8 +4,10 @@ extends RefCounted
 const POSITIONS = [
 	Vector2(100, 100),
 	Vector2(200, 100),
+	Vector2(300, 100),
 	Vector2(100, 200),
-	Vector2(200, 200)
+	Vector2(200, 200),
+	Vector2(300, 200)
 ]
 
 var _terrain: Terrain = null
@@ -23,9 +25,10 @@ func process(delta: float) -> void:
 			return
 		var pd: PeerData = _terrain.peer_data.get(id)
 		if t != null and pd != null:
-			var vel: float = pd.thrust * delta * Tank.SPEED
+			var vel: float = pd.thrust * delta * (Tank.FW_SPEED if pd.thrust > 0 else Tank.BW_SPEED)
 			if pd.body_drot != 0:
-				t.rotate_body(pd.body_drot * delta * Tank.BODY_R_SPEED, vel)
+				var r = t.rotate_body(pd.body_drot * delta * Tank.BODY_R_SPEED, vel)
+				t.rotate_barrel(r) # barrel follows body
 			if pd.barrel_drot != 0:
 				t.rotate_barrel(pd.barrel_drot * delta * Tank.BARREL_R_SPEED)
 			if pd.thrust != 0:
