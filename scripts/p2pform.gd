@@ -7,13 +7,15 @@ extends PanelContainer
 @onready var dismiss_btn: CheckButton = $MarginContainer/GridContainer/DismissButton
 
 @onready var serve_lbl: Label = $MarginContainer/GridContainer/ServeLabel
-@onready var log_lbl: Label = $MarginContainer/GridContainer/LogLabel
+@onready var scroll_ctn: ScrollContainer = $MarginContainer/GridContainer/ScrollContainer
+@onready var log_lbl: Label = $MarginContainer/GridContainer/ScrollContainer/LogLabel
 
 @onready var send_ed: LineEdit = $MarginContainer/GridContainer/SendLineEdit
 @onready var client_ed: LineEdit = $MarginContainer/GridContainer/ClientLineEdit
 
 var tube_client: TubeClient
 var peer_data: Dictionary
+var _skip_set_cb: bool = false
 	
 func _ready() -> void:
 	serve_btn.pressed.connect(_on_serve_btn_pressed)
@@ -26,10 +28,13 @@ func _ready() -> void:
 		var join = JavaScriptBridge.eval("new URLSearchParams(location.search).get('join')", true)
 		if join:
 			client_ed.text = join
+			#_on_join_btn_pressed.call_deferred()
 			return
-		#var serve = JavaScriptBridge.eval("new URLSearchParams(location.search).get('serve')", true)
-		#if serve: serve
-		#elif serve: tube_client.
+		var serve = JavaScriptBridge.eval("new URLSearchParams(location.search).get('serve')", true)
+		if serve:
+			_skip_set_cb = true
+			tube_client.session_id = serve
+			_on_serve_btn_pressed.call_deferred()
 
 func set_tube_client(tc: TubeClient) -> void:
 	tube_client = tc
@@ -45,8 +50,10 @@ func _on_serve_btn_pressed() -> void:
 	serve_btn.release_focus()  # Remove focus to prevent space key from toggling button
 	tube_client.create_session()
 	serve_lbl.text = tube_client.session_id
-	DisplayServer.clipboard_set(tube_client.session_id)
 	DisplayServer.window_set_title("hosting session: " + tube_client.session_id)
+	if not _skip_set_cb:
+		DisplayServer.clipboard_set(tube_client.session_id)
+	
 
 func _on_join_btn_pressed() -> void:
 	"""player decided to be a client and join a session from elsewhere"""
@@ -82,7 +89,7 @@ func _on_dismiss_btn_toggled(mode: bool) -> void:
 	dismiss_btn.release_focus()  # Remove focus to prevent space key from toggling button
 	send_btn.visible = mode
 	send_ed.visible = mode
-	log_lbl.visible = mode
+	scroll_ctn.visible = mode
 
 func _on_session_created() -> void:
 	"""show be triggered on the host once session was obtained"""
@@ -102,6 +109,13 @@ func _on_session_left() -> void:
 func _log(msg: String) -> void:
 	print(msg)
 	log_lbl.text += "\n" + msg
+	#scroll_ctn.scroll_vertical = scroll_ctn.
+	#scroll_ctn.scroll_vertical += 100
+	_page_down.call_deferred()
+
+func _page_down() -> void:
+	# TODO fix
+	scroll_ctn.scroll_vertical = int(scroll_ctn.get_v_scroll_bar().max_value)
 
 func _hide_forms() -> void:
 	serve_btn.visible = false

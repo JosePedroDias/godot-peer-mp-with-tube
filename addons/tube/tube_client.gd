@@ -206,7 +206,8 @@ func create_session() -> void:
 		return
 	
 	state = State.CREATING_SESSION
-	session_id = context.generate_session_id()
+	if session_id.length() == 0:
+		session_id = context.generate_session_id()
 	peer_id = _SERVER_PEER_ID
 	refuse_new_connections = false
 	_session_initiated.emit()
