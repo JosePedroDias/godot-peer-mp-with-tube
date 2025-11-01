@@ -1,6 +1,8 @@
 class_name SpawnSys
 extends RefCounted
 
+const RESPAWN_AFTER_SECS: float = 3.0
+
 var _terrain: Terrain = null
 var _tank_scene = load("res://scenes/tank.tscn")
 var _bullet_scene = load("res://scenes/bullet.tscn")
@@ -55,6 +57,17 @@ func despawn_tank(peer_id: String) -> void:
 	_terrain._tank_sys.erase_tank(peer_id)
 	tank.queue_free()
 	#print("Despawned tank for peer: ", peer_id)
+
+	var respawn_timer = Timer.new()
+	respawn_timer.wait_time = RESPAWN_AFTER_SECS
+	respawn_timer.one_shot = true
+	_terrain.add_child(respawn_timer)
+	respawn_timer.timeout.connect(_on_respawn_timer_timeout.bind(peer_id, respawn_timer))
+	respawn_timer.start()
+
+func _on_respawn_timer_timeout(peer_id: String, timer: Timer) -> void:
+	spawn_tank(peer_id)
+	timer.queue_free()
 
 func spawn_bullet(id: String) -> void:
 	var pd: PeerData = _terrain.peer_data.get(id)
