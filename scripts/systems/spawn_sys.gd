@@ -115,5 +115,11 @@ func _custom_spawn_function(d: Variant) -> Node:
 			var tracks = _tracks_scene.instantiate()
 			if data.has("position"): tracks.position = data["position"]
 			if data.has("rotation"): tracks.rotation = data["rotation"]
+			call_deferred("_node_to_bottom", tracks)
 			return tracks
 	return null
+
+func _node_to_bottom(nd: Node) -> void:
+	var parent = nd.get_parent()
+	if parent == null: return
+	parent.move_child(nd, 0)
