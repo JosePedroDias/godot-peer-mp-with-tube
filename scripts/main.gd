@@ -2,7 +2,7 @@ class_name Main
 extends Node2D
 
 @onready var tube_client: TubeClient = $TubeClient
-@onready var form: P2pform = $P2Pform
+@onready var form: P2pform = $CanvasLayer/P2Pform
 @onready var terrain: Terrain = $Terrain
 
 var peer_data: Dictionary[String, PeerData] = {}

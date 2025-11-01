@@ -14,6 +14,8 @@ script = ExtResource("1_0wfyh")
 context = ExtResource("2_0wfyh")
 metadata/_custom_type_script = "uid://cy006uvidc4y"
 
-[node name="P2Pform" parent="." instance=ExtResource("4_jyhfs")]
-
 [node name="Terrain" parent="." instance=ExtResource("5_tbgi4")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="P2Pform" parent="CanvasLayer" instance=ExtResource("4_jyhfs")]
