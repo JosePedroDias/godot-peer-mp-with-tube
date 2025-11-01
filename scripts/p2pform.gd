@@ -21,6 +21,15 @@ func _ready() -> void:
 	send_btn.pressed.connect(_on_send_btn_pressed)
 	send_ed.text_submitted.connect(_on_send_ed_text_submitted)
 	dismiss_btn.toggled.connect(_on_dismiss_btn_toggled)
+	
+	if OS.get_name() == "Web":
+		var join = JavaScriptBridge.eval("new URLSearchParams(location.search).get('join')", true)
+		if join:
+			client_ed.text = join
+			return
+		#var serve = JavaScriptBridge.eval("new URLSearchParams(location.search).get('serve')", true)
+		#if serve: serve
+		#elif serve: tube_client.
 
 func set_tube_client(tc: TubeClient) -> void:
 	tube_client = tc
