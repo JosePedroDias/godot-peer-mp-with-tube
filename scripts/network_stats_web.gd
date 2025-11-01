@@ -11,41 +11,17 @@ func _ready():
 		return
 
 	# inject the shim
-	print("Applying JS shim...")
+	#print("Applying JS shim...")
 	var js_text: String = """(function () {
 	const enc = new TextEncoder();
 	const sizeOf = (d) => {
 		if (typeof d === "string") return enc.encode(d).length;
 		if (d instanceof ArrayBuffer) return d.byteLength;
-		if (ArrayBuffer.isView(d)) return d.byteLength; // TypedArray/DataView
-		// Fallback (rare): best-effort stringify
+		if (ArrayBuffer.isView(d)) return d.byteLength;
 		try { return enc.encode(String(d)).length; } catch (_) { return 0; }
 	};
 
-	const st = {
-		ws:  { tx: 0, rx: 0, msgs_tx: 0, msgs_rx: 0 },
-		rtc: { tx: 0, rx: 0, msgs_tx: 0, msgs_rx: 0 }
-	};
-
-	// ---- WebSocket ----
-	const RealWS = window.WebSocket;
-	if (RealWS) {
-		window.WebSocket = function (url, protocols) {
-			const ws = new RealWS(url, protocols);
-			const origSend = ws.send;
-			ws.send = function (data) {
-				++st.ws.msgs_tx;
-				st.ws.tx += sizeOf(data);
-				return origSend.call(ws, data);
-			};
-			ws.addEventListener("message", (ev) => {
-				++st.ws.msgs_rx;
-				st.ws.rx += sizeOf(ev.data);
-			}, { capture: true });
-			return ws;
-		};
-		window.WebSocket.prototype = RealWS.prototype;
-	}
+	let rtc = { tx: 0, rx: 0, msgs_tx: 0, msgs_rx: 0 };
 
 	// ---- WebRTC / DataChannel ----
 	const RealPC = window.RTCPeerConnection;
@@ -55,13 +31,13 @@ func _ready():
 			dc.__godot_patched = true;
 			const origSend = dc.send.bind(dc);
 			dc.send = (data) => {
-				++st.rtc.msgs_tx;
-				st.rtc.tx += sizeOf(data);
+				++rtc.msgs_tx;
+				rtc.tx += sizeOf(data);
 				return origSend(data);
 			};
 			dc.addEventListener("message", (ev) => {
-				++st.rtc.msgs_rx;
-				st.rtc.rx += sizeOf(ev.data);
+				++rtc.msgs_rx;
+				rtc.rx += sizeOf(ev.data);
 			}, { capture: true });
 		};
 
@@ -80,10 +56,9 @@ func _ready():
 	}
 
 	window.getNetStats = function() {
-		const stJson = JSON.stringify(st);
-		st.ws  = { tx: 0, rx: 0, msgs_tx: 0, msgs_rx: 0 };
-		st.rtc = { tx: 0, rx: 0, msgs_tx: 0, msgs_rx: 0 };
-		return stJson;
+		const rtcJson = JSON.stringify(rtc);
+		rtc = { tx: 0, rx: 0, msgs_tx: 0, msgs_rx: 0 };
+		return rtcJson;
 	}
 })();"""
 	JavaScriptBridge.eval(js_text)
@@ -97,10 +72,7 @@ func _ready():
 func _on_poll_stats():
 	var json_str = JavaScriptBridge.eval("window.getNetStats()")
 	if typeof(json_str) == TYPE_STRING and json_str != "":
-		var data = JSON.parse_string(json_str)
-		if typeof(data) == TYPE_DICTIONARY:
+		var rtc = JSON.parse_string(json_str)
+		if typeof(rtc) == TYPE_DICTIONARY:
 			# { tx, rx, msgs_tx, msgs_rx }
-			var ws = data.get("ws", {})
-			var rtc = data.get("rtc", {})
-			emit_signal("net_stats", ws, rtc)
-			print('data 3')
+			emit_signal("net_stats", rtc)

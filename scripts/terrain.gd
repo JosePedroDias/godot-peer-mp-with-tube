@@ -93,11 +93,11 @@ func _physics_process(delta: float) -> void:
 	_tank_sys.process(delta)
 
 func _on_peer_connected(id: int) -> void:
-	print("Terrain: Peer connected: ", id)
+	#print("Terrain: Peer connected: ", id)
 	if multiplayer.is_server(): _spawn_sys.spawn_tank(str(id))
 
 func _on_peer_disconnected(id: int) -> void:
-	print("Terrain: Peer disconnected: ", id)
+	#print("Terrain: Peer disconnected: ", id)
 	if multiplayer.is_server(): _spawn_sys.despawn_tank(str(id))
 
 func spawn_tank_for_server() -> void:

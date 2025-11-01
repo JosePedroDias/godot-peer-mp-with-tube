@@ -11,43 +11,46 @@ size_flags_vertical = 4
 theme = ExtResource("1_7aom0")
 script = ExtResource("1_wabmg")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="ServeButton" type="Button" parent="GridContainer"]
+[node name="ServeButton" type="Button" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "serve"
 
-[node name="ServeLabel" type="Label" parent="GridContainer"]
+[node name="ServeLabel" type="Label" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 
-[node name="JoinButton" type="Button" parent="GridContainer"]
+[node name="JoinButton" type="Button" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "join"
 
-[node name="ClientLineEdit" type="LineEdit" parent="GridContainer"]
+[node name="ClientLineEdit" type="LineEdit" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 
-[node name="SendButton" type="Button" parent="GridContainer"]
+[node name="SendButton" type="Button" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "send"
 
-[node name="SendLineEdit" type="LineEdit" parent="GridContainer"]
+[node name="SendLineEdit" type="LineEdit" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DismissButton" type="CheckButton" parent="GridContainer"]
+[node name="DismissButton" type="CheckButton" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 0
 button_pressed = true
 
-[node name="LogLabel" type="Label" parent="GridContainer"]
+[node name="LogLabel" type="Label" parent="MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2

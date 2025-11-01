@@ -17,24 +17,24 @@ func _ready() -> void:
 
 func _on_session_created():
 	var id = str(tube_client.peer_id)
-	print("_on_session_created: ", id)
+	#print("_on_session_created: ", id)
 	terrain.my_id = id
 	peer_data.set(id, PeerData.new())
-	print("assigning my_id: ", id)
-	print("peer_data: ", str(peer_data))
+	#print("assigning my_id: ", id)
+	#print("peer_data: ", str(peer_data))
 	terrain.spawn_tank_for_server()
 
 func _on_session_joined():
 	var id = str(tube_client.peer_id)
-	print("_on_session_joined: ", id)
+	#print("_on_session_joined: ", id)
 	if terrain.my_id.length() > 0: return
 	terrain.my_id = id
 	peer_data.set(id, PeerData.new())
-	print("assigning my_id: ", id)
-	print("peer_data: ", str(peer_data))
+	#print("assigning my_id: ", id)
+	#print("peer_data: ", str(peer_data))
 
 func _on_peer_connected(_id):
 	var id = str(_id)
-	print("_on_peer_connected: ", id)
+	#print("_on_peer_connected: ", id)
 	peer_data.set(id, PeerData.new())
-	print("peer_data: ", str(peer_data))
+	#print("peer_data: ", str(peer_data))
