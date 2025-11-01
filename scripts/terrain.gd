@@ -8,6 +8,7 @@ var my_id: String
 var _bullet_sys: BulletSys
 var _spawn_sys: SpawnSys
 var _tank_sys: TankSys
+var _previous_action_states: Dictionary = {}
 
 func _init() -> void:
 	_bullet_sys = BulletSys.new(self)
@@ -19,31 +20,42 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
-func _input(ev: InputEvent) -> void:
+	# Initialize previous action states
+	_previous_action_states = {
+		"up": false,
+		"down": false,
+		"left": false,
+		"right": false,
+		"rotate_left": false,
+		"rotate_right": false,
+		"fire": false
+	}
+
+func _process(_delta: float) -> void:
 	if my_id.length() == 0: return
-	
+
 	var pd: PeerData = peer_data.get(my_id)
 	if pd == null: return
-	
-	if ev.is_action_pressed("up"): send_thrust.rpc(1)
-	elif ev.is_action_released("up"): send_thrust.rpc(0)
-	
-	if ev.is_action_pressed("down"): send_thrust.rpc(-1)
-	elif ev.is_action_released("down"): send_thrust.rpc(0)
-	
-	if ev.is_action_pressed("left"): send_body_drot.rpc(-1)
-	elif ev.is_action_released("left"): send_body_drot.rpc(0)
-	
-	if ev.is_action_pressed("right"): send_body_drot.rpc(1)
-	elif ev.is_action_released("right"): send_body_drot.rpc(0)
-	
-	if ev.is_action_pressed("rotate_left"): send_barrel_rot.rpc(-1)
-	elif ev.is_action_released("rotate_left"): send_barrel_rot.rpc(0)
-	
-	if ev.is_action_pressed("rotate_right"): send_barrel_rot.rpc(1)
-	elif ev.is_action_released("rotate_right"): send_barrel_rot.rpc(0)
-		
-	if ev.is_action_pressed("fire"): return send_fire.rpc()
+
+	# Check for action state changes (handles both keyboard and UI button input)
+	_check_action_state_change("up", 1, 0, send_thrust)
+	_check_action_state_change("down", -1, 0, send_thrust)
+	_check_action_state_change("left", -1, 0, send_body_drot)
+	_check_action_state_change("right", 1, 0, send_body_drot)
+	_check_action_state_change("rotate_left", -1, 0, send_barrel_rot)
+	_check_action_state_change("rotate_right", 1, 0, send_barrel_rot)
+
+	# Fire is special - it's a single action, not continuous
+	if Input.is_action_just_pressed("fire"):
+		send_fire.rpc()
+
+func _check_action_state_change(action: String, press_value: float, release_value: float, rpc_method: Callable) -> void:
+	var current_state = Input.is_action_pressed(action)
+	var previous_state = _previous_action_states.get(action, false)
+	if current_state != previous_state:
+		if current_state: rpc_method.rpc(press_value)
+		else: rpc_method.rpc(release_value)
+		_previous_action_states[action] = current_state
 
 @rpc("any_peer", "call_local", "reliable")
 func send_thrust(thrust: float) -> void:
