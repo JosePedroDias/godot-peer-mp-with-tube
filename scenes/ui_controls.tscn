@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cp2lp0ustyqkj"]
+[gd_scene load_steps=4 format=3 uid="uid://cp2lp0ustyqkj"]
 
 [ext_resource type="Theme" uid="uid://cfxgnfothjqev" path="res://themes/ui.tres" id="1_fgy1b"]
 [ext_resource type="Script" uid="uid://bkq2u1a7pxwj1" path="res://scripts/ui_controls.gd" id="1_hpegm"]
+[ext_resource type="PackedScene" uid="uid://bnfqfdpd7g61t" path="res://scenes/joystick_control.tscn" id="3_joystick"]
 
 [node name="UiControls" type="Control"]
 layout_mode = 3
@@ -17,71 +18,37 @@ grow_vertical = 2
 theme = ExtResource("1_fgy1b")
 script = ExtResource("1_hpegm")
 
-[node name="FwBtn" type="Button" parent="."]
-custom_minimum_size = Vector2(35, 35)
+[node name="JoystickControl" parent="." instance=ExtResource("3_joystick")]
 layout_mode = 0
-offset_left = 38.0
-offset_top = -86.0
-offset_right = 73.0
-offset_bottom = -51.0
-focus_mode = 0
-text = "FW"
-
-[node name="BwBtn" type="Button" parent="."]
-custom_minimum_size = Vector2(35, 35)
-layout_mode = 0
-offset_left = 38.0
-offset_top = -48.0
-offset_right = 73.0
-offset_bottom = -13.0
-focus_mode = 0
-text = "BW"
-
-[node name="LeBtn" type="Button" parent="."]
-custom_minimum_size = Vector2(35, 35)
-layout_mode = 0
-offset_top = -48.0
-offset_right = 35.0
-offset_bottom = -13.0
-focus_mode = 0
-text = "<-"
-
-[node name="RiBtn" type="Button" parent="."]
-custom_minimum_size = Vector2(35, 35)
-layout_mode = 0
-offset_left = 76.0
-offset_top = -48.0
-offset_right = 111.0
-offset_bottom = -13.0
-focus_mode = 0
-text = "->"
+offset_top = -111.0
+offset_bottom = -11.0
 
 [node name="Le2Btn" type="Button" parent="."]
 custom_minimum_size = Vector2(35, 35)
 layout_mode = 0
-offset_left = -47.0
-offset_top = -87.0
-offset_right = -12.0
-offset_bottom = -52.0
+offset_left = -48.0
+offset_top = -101.0
+offset_right = -13.0
+offset_bottom = -66.0
 focus_mode = 0
-text = "/'>"
+text = ">"
 
 [node name="Ri2Btn" type="Button" parent="."]
 custom_minimum_size = Vector2(35, 35)
 layout_mode = 0
-offset_left = -85.0
-offset_top = -87.0
-offset_right = -50.0
-offset_bottom = -52.0
+offset_left = -92.0
+offset_top = -101.0
+offset_right = -57.0
+offset_bottom = -66.0
 focus_mode = 0
-text = "<'\\"
+text = "<"
 
 [node name="FireBtn" type="Button" parent="."]
 custom_minimum_size = Vector2(35, 35)
 layout_mode = 0
-offset_left = -68.0
-offset_top = -48.0
-offset_right = -27.0
-offset_bottom = -13.0
+offset_left = -72.0
+offset_top = -59.0
+offset_right = -31.0
+offset_bottom = -24.0
 focus_mode = 0
 text = "FIRE"
