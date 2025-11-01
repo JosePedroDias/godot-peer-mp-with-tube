@@ -3,7 +3,9 @@
 class_name TubeContext extends Resource
 ## A resource that holds configuration and helper methods for managing simple multiplayer session.
 
-const _STRING_CHARACTER_SET := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+#const _STRING_CHARACTER_SET := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+const _STRING_CHARACTER_SET := "ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnopqrstuvwxyz34679"
+
 
 @export_tool_button("Generate app id", "RandomNumberGenerator") var _generate_app_id_tool_button = (func():
 	app_id = _get_random_string(15)
