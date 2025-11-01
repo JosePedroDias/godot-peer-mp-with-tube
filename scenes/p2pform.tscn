@@ -17,6 +17,7 @@ columns = 2
 
 [node name="ServeButton" type="Button" parent="GridContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "serve"
 
 [node name="ServeLabel" type="Label" parent="GridContainer"]
@@ -25,6 +26,7 @@ theme_override_font_sizes/font_size = 24
 
 [node name="JoinButton" type="Button" parent="GridContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "join"
 
 [node name="ClientLineEdit" type="LineEdit" parent="GridContainer"]
@@ -32,6 +34,7 @@ layout_mode = 2
 
 [node name="SendButton" type="Button" parent="GridContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "send"
 
 [node name="SendLineEdit" type="LineEdit" parent="GridContainer"]
@@ -41,6 +44,7 @@ size_flags_horizontal = 3
 [node name="DismissButton" type="CheckButton" parent="GridContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+focus_mode = 0
 button_pressed = true
 
 [node name="LogLabel" type="Label" parent="GridContainer"]

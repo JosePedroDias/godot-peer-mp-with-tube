@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3 uid="uid://cp2lp0ustyqkj"]
+
+[ext_resource type="Theme" uid="uid://cfxgnfothjqev" path="res://themes/ui.tres" id="1_fgy1b"]
+[ext_resource type="Script" uid="uid://bkq2u1a7pxwj1" path="res://scripts/ui_controls.gd" id="1_hpegm"]
+
+[node name="UiControls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 3.0
+offset_right = 8.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_fgy1b")
+script = ExtResource("1_hpegm")
+
+[node name="FwBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = 34.0
+offset_top = -39.0
+offset_right = 69.0
+offset_bottom = -4.0
+focus_mode = 0
+text = "FW"
+
+[node name="BwBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = 34.0
+offset_top = -1.0
+offset_right = 69.0
+offset_bottom = 34.0
+focus_mode = 0
+text = "BW"
+
+[node name="LeBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = -4.0
+offset_top = -1.0
+offset_right = 31.0
+offset_bottom = 34.0
+focus_mode = 0
+text = "<-"
+
+[node name="RiBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = 72.0
+offset_top = -1.0
+offset_right = 107.0
+offset_bottom = 34.0
+focus_mode = 0
+text = "->"
+
+[node name="Le2Btn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = -51.0
+offset_top = -40.0
+offset_right = -16.0
+offset_bottom = -5.0
+focus_mode = 0
+text = "/'>"
+
+[node name="Ri2Btn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = -89.0
+offset_top = -40.0
+offset_right = -54.0
+offset_bottom = -5.0
+focus_mode = 0
+text = "<'\\"
+
+[node name="FireBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 0
+offset_left = -72.0
+offset_top = -1.0
+offset_right = -31.0
+offset_bottom = 34.0
+focus_mode = 0
+text = "FIRE"
