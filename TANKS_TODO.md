@@ -1,9 +1,7 @@
-- display explosion fx
-- display barrel fire fx
 - tank/tank sfx
 - tank/bullet sfx
 - limit map movement
 - add obstacles
 - better respawn logic
-- hide HUD, place it on bottom left?
 - dynamic cam (center on player, zoom with speed?)
+- HUD improvements
