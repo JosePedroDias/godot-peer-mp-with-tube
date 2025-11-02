@@ -3,14 +3,17 @@ extends Node2D
 
 @onready var tube_client: TubeClient = $TubeClient
 @onready var form: P2pform = $CanvasLayer/P2Pform
+@onready var net_overlay: NetOverlay = $CanvasLayer/NetOverlay
 @onready var terrain: Terrain = $Terrain
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
+@onready var camera: Camera2D = $Camera2D
 
 var peer_data: Dictionary[String, PeerData] = {}
 
 func _ready() -> void:
 	form.peer_data = peer_data
 	form.set_tube_client(tube_client)
+	net_overlay.set_terrain(terrain)
 	tube_client.session_created.connect(_on_session_created)
 	tube_client.session_joined.connect(_on_session_joined)
 	tube_client.peer_connected.connect(_on_peer_connected)
@@ -18,6 +21,13 @@ func _ready() -> void:
 
 	# Add UI controls only on mobile devices (mobile OS or portrait orientation)
 	if _is_mobile_device(): _add_ui_controls()
+
+func _process(_delta: float) -> void:
+	# Update camera to follow player's tank
+	if terrain.my_id.length() > 0:
+		var my_tank = terrain._tank_sys.get_tank(terrain.my_id)
+		if my_tank != null:
+			camera.position = my_tank.position
 
 func _is_mobile_device() -> bool:
 	var os_name = OS.get_name()

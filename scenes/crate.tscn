@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dm7tvxt4fmqfw"]
+
+[ext_resource type="Texture2D" uid="uid://df3cmyb8uhuqp" path="res://textures/obstacles/crateWood.png" id="1_b66cd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwt0d"]
+size = Vector2(26, 26)
+
+[node name="Crate" type="StaticBody2D"]
+collision_layer = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_b66cd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dwt0d")

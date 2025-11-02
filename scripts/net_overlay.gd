@@ -1,11 +1,16 @@
 extends Control
 class_name NetOverlay               # 0=top-left, 1=top-right, 2=bottom-right, 3=bottom-left
 
-@onready var _out_l: Label = $PanelContainer/MarginContainer/VBoxContainer/OutLabel
-@onready var _in_l:  Label = $PanelContainer/MarginContainer/VBoxContainer/InLabel
+@onready var _inst_l: Label = $PanelContainer/MarginContainer/VBoxContainer/NumInstancesLabel
+@onready var _out_l:  Label = $PanelContainer/MarginContainer/VBoxContainer/OutLabel
+@onready var _in_l:   Label = $PanelContainer/MarginContainer/VBoxContainer/InLabel
+var _terrain: Terrain
 
 func _ready():
 	NetworkStatsWeb.net_stats.connect(_on_net_stats)
+
+func set_terrain(t: Terrain) -> void:
+	_terrain = t
 
 func _format_bytes(n: int) -> String:
 	if n < 1024: return "%d B" % n
@@ -17,5 +22,8 @@ func _on_net_stats(rtc: Dictionary):
 	var rtc_rx := int(rtc.get("rx", 0))
 	var rtc_mtx := int(rtc.get("msgs_tx", 0))
 	var rtc_mrx := int(rtc.get("msgs_rx", 0))
+	_inst_l.text = "# instances: " + str(
+		_terrain.get_spawned_instances()) + " / " + str(_terrain.get_max_spawned_instances()
+	)
 	_out_l.text = "out %s (%d msgs)" % [_format_bytes(rtc_tx), rtc_mtx]
 	_in_l.text  = "in  %s (%d msgs)" % [_format_bytes(rtc_rx), rtc_mrx]

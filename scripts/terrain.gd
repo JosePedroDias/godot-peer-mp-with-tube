@@ -9,6 +9,7 @@ var _bullet_sys: BulletSys
 var _spawn_sys: SpawnSys
 var _tank_sys: TankSys
 var _sfx_sys: SfxSys
+var _level: Node
 
 var _previous_action_states: Dictionary = {}
 
@@ -19,9 +20,13 @@ func _init() -> void:
 	# Load the SfxSys scene instead of using new()
 	var sfx_scene = load("res://scenes/sfx_sys.tscn")
 	_sfx_sys = sfx_scene.instantiate()
+	
+	var level_scene = load("res://scenes/maps/level_01.tscn")
+	_level = level_scene.instantiate()
 
 func _ready() -> void:
 	add_child(_sfx_sys)
+	add_child(_level)
 	_spawn_sys.assign_spawner()
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -109,3 +114,10 @@ func _on_peer_disconnected(id: int) -> void:
 
 func spawn_tank_for_server() -> void:
 	if multiplayer.is_server() and my_id != "": _spawn_sys.spawn_tank(my_id)
+
+func get_spawned_instances() -> int:
+	return spawner.get_child_count()
+	
+func get_max_spawned_instances() -> int:
+	return spawner.spawn_limit
+	

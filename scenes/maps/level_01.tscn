@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://xh8m17jjghs3"]
+
+[ext_resource type="PackedScene" uid="uid://dm7tvxt4fmqfw" path="res://scenes/crate.tscn" id="1_jnve3"]
+[ext_resource type="PackedScene" uid="uid://boi32o0r72jbt" path="res://scenes/tree.tscn" id="2_xkcun"]
+
+[node name="Level01" type="Node2D"]
+
+[node name="Crate" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-301, -390)
+
+[node name="Crate2" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-289, 171)
+
+[node name="Crate3" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(458, -171)
+
+[node name="Crate4" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-19, -15)
+
+[node name="Spawn" type="Node2D" parent="."]
+position = Vector2(-176, -177)
+
+[node name="Spawn2" type="Node2D" parent="."]
+position = Vector2(235, 190)
+
+[node name="Tree" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-261, -66)
+
+[node name="Tree2" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(425, 107)
+
+[node name="Tree3" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(255, -283)

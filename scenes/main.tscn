@@ -17,8 +17,10 @@ metadata/_custom_type_script = "uid://cy006uvidc4y"
 
 [node name="Terrain" parent="." instance=ExtResource("5_tbgi4")]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
 
 [node name="NetOverlay" parent="CanvasLayer" instance=ExtResource("6_tefeu")]
 scale = Vector2(1.5, 1.5)
@@ -29,9 +31,9 @@ size_flags_vertical = 0
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -106.5
-offset_right = 215.0
-offset_bottom = 106.5
+offset_top = -193.0
+offset_right = 231.0
+offset_bottom = 194.0
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0

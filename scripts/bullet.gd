@@ -19,11 +19,18 @@ func _on_body_entered(body: Node2D) -> void:
 		if tank.peer_id != owner_id:
 			#print("Bullet from ", owner_id, " has hit tank ", tank.peer_id)
 			time_left = 0
-			if _terrain != null: 
+			if _terrain != null:
 				tank.remove_health(10)
 				_terrain._spawn_sys.spawn_explosion(position)
 				queue_free()
 				#print("tank " + tank.peer_id + "'s energy: ", str(tank.energy))
+	elif body is StaticBody2D:
+		# Hit a crate, tree, or other static obstacle
+		#print("Bullet from ", owner_id, " has hit obstacle: ", body.name)
+		time_left = 0
+		if _terrain != null:
+			_terrain._spawn_sys.spawn_explosion(position)
+			queue_free()
 
 func _to_string() -> String:
 	return "owner: " + owner_id + ", dir: " + str(dir)
