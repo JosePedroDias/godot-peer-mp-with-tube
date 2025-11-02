@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://dlqr60mlmjwqt"]
+
+[ext_resource type="Script" uid="uid://chvxoosb23a8i" path="res://scripts/systems/sfx_sys.gd" id="1_4e4o1"]
+[ext_resource type="AudioStream" uid="uid://8qk33okwbxlb" path="res://sounds/fired.ogg" id="1_s75d7"]
+[ext_resource type="AudioStream" uid="uid://bxfqe6ao3pa7m" path="res://sounds/tank_hit.ogg" id="2_4e4o1"]
+[ext_resource type="AudioStream" uid="uid://2yqfd4npu4ee" path="res://sounds/tank_moving.ogg" id="3_toulu"]
+
+[node name="SfxSys" type="Node"]
+script = ExtResource("1_4e4o1")
+
+[node name="FirePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_s75d7")
+
+[node name="HitPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_4e4o1")
+
+[node name="MovePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_toulu")

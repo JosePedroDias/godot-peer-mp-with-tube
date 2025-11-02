@@ -8,14 +8,20 @@ var my_id: String
 var _bullet_sys: BulletSys
 var _spawn_sys: SpawnSys
 var _tank_sys: TankSys
+var _sfx_sys: SfxSys
+
 var _previous_action_states: Dictionary = {}
 
 func _init() -> void:
 	_bullet_sys = BulletSys.new(self)
 	_tank_sys = TankSys.new(self)
 	_spawn_sys = SpawnSys.new(self)
+	# Load the SfxSys scene instead of using new()
+	var sfx_scene = load("res://scenes/sfx_sys.tscn")
+	_sfx_sys = sfx_scene.instantiate()
 
 func _ready() -> void:
+	add_child(_sfx_sys)
 	_spawn_sys.assign_spawner()
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -81,6 +87,7 @@ func send_barrel_rot(barrel_drot: float) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func send_fire() -> void:
 	var id = str(multiplayer.get_remote_sender_id())
+
 	if multiplayer.is_server():
 		_spawn_sys.spawn_bullet(id)
 		var tank = _tank_sys.get_tank(id)

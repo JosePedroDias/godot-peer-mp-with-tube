@@ -110,10 +110,12 @@ func _custom_spawn_function(d: Variant) -> Node:
 			if data.has("position"): bullet.position = data["position"]
 			if data.has("rotation"): bullet.rotation = data["rotation"]
 			_terrain._bullet_sys.add_bullet(bullet)
+			_terrain._sfx_sys.play(SfxSys.Sfx.FIRE)
 			return bullet
 		elif data["type"] == "explosion":
 			var expl = _explosion_scene.instantiate()
 			if data.has("position"): expl.position = data["position"]
+			_terrain._sfx_sys.play(SfxSys.Sfx.HIT)
 			return expl
 		elif data["type"] == "fire":
 			var fire = _fire_scene.instantiate()

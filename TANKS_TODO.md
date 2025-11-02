@@ -1,5 +1,3 @@
-- tank/tank sfx
-- tank/bullet sfx
 - limit map movement
 - add obstacles
 - better respawn logic
