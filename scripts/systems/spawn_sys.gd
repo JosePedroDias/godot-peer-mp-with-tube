@@ -22,7 +22,8 @@ func spawn_tank(peer_id: String) -> void:
 		"type": "tank",
 		"peer_id": peer_id,
 		"theme": _terrain._tank_sys.get_theme(),
-		"position": _terrain._tank_sys.get_spawn_position()
+		"position": Vector2(_terrain._level.get_spawn_position()),
+		"rotation": randf() * 2.0 * PI
 	})
 	
 func spawn_explosion(pos: Vector2) -> void:
@@ -98,9 +99,10 @@ func _custom_spawn_function(d: Variant) -> Node:
 			if data.has("peer_id"):  tank.peer_id  = data["peer_id"]
 			if data.has("theme"):    tank.theme    = data["theme"]
 			if data.has("position"): tank.position = data["position"]
-			var rotation = randf() * 2.0 * PI
-			tank.rotate_body(rotation)
-			tank.rotate_barrel(rotation)
+			var rot: float = 0.0
+			if data.has("rotation"): rot = data["rotation"]
+			tank.rotate_body.call_deferred(rot)
+			tank.rotate_barrel.call_deferred(rot)
 			_terrain._tank_sys.set_tank(tank.peer_id, tank)
 			return tank
 		elif data["type"] == "bullet":

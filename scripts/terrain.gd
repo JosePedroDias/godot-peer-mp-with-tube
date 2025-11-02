@@ -9,7 +9,7 @@ var _bullet_sys: BulletSys
 var _spawn_sys: SpawnSys
 var _tank_sys: TankSys
 var _sfx_sys: SfxSys
-var _level: Node
+var _level: Level
 
 var _previous_action_states: Dictionary = {}
 
@@ -49,10 +49,10 @@ func _process(_delta: float) -> void:
 	if pd == null: return
 
 	# Check for action state changes (handles both keyboard and UI button input)
-	_check_action_state_change("up", 1, 0, send_thrust)
-	_check_action_state_change("down", -1, 0, send_thrust)
-	_check_action_state_change("left", -1, 0, send_body_drot)
-	_check_action_state_change("right", 1, 0, send_body_drot)
+	_check_action_state_change("up",           1, 0, send_thrust)
+	_check_action_state_change("down",        -1, 0, send_thrust)
+	_check_action_state_change("left",        -1, 0, send_body_drot)
+	_check_action_state_change("right",        1, 0, send_body_drot)
 	_check_action_state_change("rotate_left", -1, 0, send_barrel_rot)
 	_check_action_state_change("rotate_right", 1, 0, send_barrel_rot)
 

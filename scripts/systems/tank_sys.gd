@@ -1,15 +1,6 @@
 class_name TankSys
 extends RefCounted
 
-const POSITIONS = [
-	Vector2(100, 100),
-	Vector2(200, 100),
-	Vector2(300, 100),
-	Vector2(100, 200),
-	Vector2(200, 200),
-	Vector2(300, 200)
-]
-
 var _terrain: Terrain = null
 var _tanks_map: Dictionary[String, Tank]
 
@@ -40,11 +31,9 @@ func process(delta: float) -> void:
 					pd.last_tracks_pos = Vector2(t.position)
 
 func get_theme() -> String:
-	return Tank.THEMES[ _tanks_map.size() % Tank.THEMES.size() ]
-
-func get_spawn_position() -> Vector2:
-	var index = _tanks_map.size() % POSITIONS.size()
-	return POSITIONS[index]
+	var themes = Tank.THEMES
+	var index = randi() % themes.size()
+	return themes[index]
 
 func set_tank(id: String, tank: Tank) -> void:
 	_tanks_map.set(id, tank)

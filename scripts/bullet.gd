@@ -1,8 +1,8 @@
 extends Area2D
 class_name Bullet
 
-const LIFE: float = 3
-const SPEED: float = 8
+const LIFE: float = 2
+const SPEED: float = 9
 
 var owner_id: String
 var time_left: float = LIFE
