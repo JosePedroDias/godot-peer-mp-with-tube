@@ -51,12 +51,13 @@ func spawn_tracks(pos: Vector2, rotation: float) -> void:
 		"rotation": rotation
 	})
 	
-func despawn_tank(peer_id: String) -> void:
+func despawn_tank(peer_id: String, respawn: bool) -> void:
 	var tank = _terrain._tank_sys.get_tank(peer_id)
 	if not tank: return
 	_terrain._tank_sys.erase_tank(peer_id)
 	tank.queue_free()
 	#print("Despawned tank for peer: ", peer_id)
+	if not respawn: return
 
 	var respawn_timer = Timer.new()
 	respawn_timer.wait_time = RESPAWN_AFTER_SECS

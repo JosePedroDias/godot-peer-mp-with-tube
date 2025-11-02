@@ -105,7 +105,7 @@ func _on_peer_connected(id: int) -> void:
 
 func _on_peer_disconnected(id: int) -> void:
 	#print("Terrain: Peer disconnected: ", id)
-	if multiplayer.is_server(): _spawn_sys.despawn_tank(str(id))
+	if multiplayer.is_server(): _spawn_sys.despawn_tank(str(id), false)
 
 func spawn_tank_for_server() -> void:
 	if multiplayer.is_server() and my_id != "": _spawn_sys.spawn_tank(my_id)

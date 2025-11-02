@@ -21,7 +21,7 @@ func process(delta: float) -> void:
 		var t: Tank = _tanks_map.get(id)
 		if t == null: return
 		if t.energy <= 0:
-			_terrain._spawn_sys.despawn_tank(t.peer_id)
+			_terrain._spawn_sys.despawn_tank(t.peer_id, true)
 			return
 		var pd: PeerData = _terrain.peer_data.get(id)
 		if t != null and pd != null:
