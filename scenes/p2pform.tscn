@@ -3,64 +3,80 @@
 [ext_resource type="Theme" uid="uid://phsi48v7n15o" path="res://themes/my_theme.tres" id="1_7aom0"]
 [ext_resource type="Script" uid="uid://bv6xlwnihtru3" path="res://scripts/p2pform.gd" id="1_wabmg"]
 
-[node name="P2Pform" type="PanelContainer"]
+[node name="P2pForm" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 381.0
-offset_bottom = 216.0
+offset_bottom = 229.0
+script = ExtResource("1_wabmg")
+
+[node name="DismissButton" type="CheckButton" parent="."]
+layout_mode = 1
+offset_top = -25.0
+offset_right = 44.0
+offset_bottom = -1.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+button_pressed = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 450.0
+offset_bottom = 250.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_7aom0")
-script = ExtResource("1_wabmg")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="ServeButton" type="Button" parent="MarginContainer/GridContainer"]
+[node name="ServeButton" type="Button" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "serve"
 
-[node name="ServeLabel" type="Label" parent="MarginContainer/GridContainer"]
+[node name="ServeLabel" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 
-[node name="JoinButton" type="Button" parent="MarginContainer/GridContainer"]
+[node name="JoinButton" type="Button" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "join"
 
-[node name="ClientLineEdit" type="LineEdit" parent="MarginContainer/GridContainer"]
+[node name="JoinLineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 
-[node name="SendButton" type="Button" parent="MarginContainer/GridContainer"]
+[node name="SendButton" type="Button" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "send"
 
-[node name="SendLineEdit" type="LineEdit" parent="MarginContainer/GridContainer"]
+[node name="SendLineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
 
-[node name="DismissButton" type="CheckButton" parent="MarginContainer/GridContainer"]
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_vertical = 0
-focus_mode = 0
-button_pressed = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/GridContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
-[node name="LogLabel" type="Label" parent="MarginContainer/GridContainer/ScrollContainer"]
+[node name="LogLabel" type="Label" parent="PanelContainer/MarginContainer/GridContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
+theme_override_font_sizes/font_size = 24
