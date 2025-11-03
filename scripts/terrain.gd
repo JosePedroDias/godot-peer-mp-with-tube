@@ -12,13 +12,21 @@ var _tank_sys: TankSys
 var _sfx_sys: SfxSys
 var _level: Level
 
-var _previous_action_states: Dictionary = {}
+var _previous_action_states: Dictionary = {
+	"up": false,
+	"down": false,
+	"left": false,
+	"right": false,
+	"rotate_left": false,
+	"rotate_right": false,
+	"fire": false
+}
 
 func _init() -> void:
 	_bullet_sys = BulletSys.new(self)
 	_tank_sys = TankSys.new(self)
 	_spawn_sys = SpawnSys.new(self)
-	# Load the SfxSys scene instead of using new()
+	
 	var sfx_scene = load("res://scenes/sfx_sys.tscn")
 	_sfx_sys = sfx_scene.instantiate()
 	
@@ -31,17 +39,6 @@ func _ready() -> void:
 	_spawn_sys.assign_spawner()
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-
-	# Initialize previous action states
-	_previous_action_states = {
-		"up": false,
-		"down": false,
-		"left": false,
-		"right": false,
-		"rotate_left": false,
-		"rotate_right": false,
-		"fire": false
-	}
 
 func _process(_delta: float) -> void:
 	if my_id.length() == 0: return
