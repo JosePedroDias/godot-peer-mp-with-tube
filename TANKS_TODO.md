@@ -1,6 +1,10 @@
 - limit map movement
-- add obstacles
-	- fence
-	- barrel
-- better respawn logic
-- HUD improvements
+- add obstacles: fence
+- HUD improvements (auto-join, focus)
+- ui_controls: multiple actions? (fire while moving?)
+- rebind keys
+- ask and store name; show it instead of id and on overlay to tank
+- missile recharge time?
+- tint red fired against tanks
+- spacial audio
+- custom font?
