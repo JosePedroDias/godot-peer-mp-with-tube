@@ -4,6 +4,7 @@ extends Node2D
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 var peer_data: Dictionary[String, PeerData]
 var my_id: String
+var is_connected_to_server: bool = false
 
 var _bullet_sys: BulletSys
 var _spawn_sys: SpawnSys
@@ -99,25 +100,41 @@ func send_fire() -> void:
 		if tank == null: return
 		_spawn_sys.spawn_fire(tank.position, tank.get_barrel_rotation())
 
+@rpc("any_peer", "call_local", "reliable")
+func set_players(s: String) -> void:
+	DisplayServer.window_set_title("players: " + s)
+
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server(): return
 	_bullet_sys.process(delta)
 	_tank_sys.process(delta)
 
+func _update_players() -> void:
+	var players = ""
+	for id_ in peer_data.keys():
+		players += "," + id_
+	set_players.rpc(players.substr(1))
+	
+
 func _on_peer_connected(id: int) -> void:
 	#print("Terrain: Peer connected: ", id)
-	if multiplayer.is_server(): _spawn_sys.spawn_tank(str(id))
+	if multiplayer.is_server():
+		_spawn_sys.spawn_tank(str(id))
+		_update_players()
 
 func _on_peer_disconnected(id: int) -> void:
 	#print("Terrain: Peer disconnected: ", id)
-	if multiplayer.is_server(): _spawn_sys.despawn_tank(str(id), false)
+	if multiplayer.is_server():
+		_spawn_sys.despawn_tank(str(id), false)
+		_update_players()
 
 func spawn_tank_for_server() -> void:
-	if multiplayer.is_server() and my_id != "": _spawn_sys.spawn_tank(my_id)
+	if multiplayer.is_server() and my_id != "":
+		_spawn_sys.spawn_tank(my_id)
+		is_connected_to_server = true  # Server is always "connected" to itself
 
 func get_spawned_instances() -> int:
 	return spawner.get_child_count()
 	
 func get_max_spawned_instances() -> int:
 	return spawner.spawn_limit
-	

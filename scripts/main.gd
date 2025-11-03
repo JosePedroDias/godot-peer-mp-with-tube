@@ -17,6 +17,8 @@ func _ready() -> void:
 	tube_client.session_created.connect(_on_session_created)
 	tube_client.session_joined.connect(_on_session_joined)
 	tube_client.peer_connected.connect(_on_peer_connected)
+	tube_client.peer_disconnected.connect(_on_peer_disconnected)
+	tube_client.session_left.connect(_on_session_left)
 	terrain.peer_data = peer_data
 
 	# Add UI controls only on mobile devices (mobile OS or portrait orientation)
@@ -61,7 +63,19 @@ func _on_session_joined():
 	if terrain.my_id.length() > 0: return
 	terrain.my_id = id
 	peer_data.set(id, PeerData.new())
+	terrain.is_connected_to_server = true
 
 func _on_peer_connected(_id):
 	var id = str(_id)
 	peer_data.set(id, PeerData.new())
+
+func _on_peer_disconnected(_id):
+	var id = str(_id)
+	peer_data.erase(id)
+
+func _on_session_left():
+	if not tube_client.is_server:
+		print("went offline")
+		DisplayServer.window_set_title("offline")
+		terrain.is_connected_to_server = false
+		# still errors out :/

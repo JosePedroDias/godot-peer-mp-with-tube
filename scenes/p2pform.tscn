@@ -49,7 +49,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="DismissButton" type="CheckButton" parent="MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 0
@@ -57,7 +56,7 @@ button_pressed = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 

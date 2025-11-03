@@ -23,6 +23,9 @@ func _ready() -> void:
 	send_btn.pressed.connect(_on_send_btn_pressed)
 	send_ed.text_submitted.connect(_on_send_ed_text_submitted)
 	dismiss_btn.toggled.connect(_on_dismiss_btn_toggled)
+
+	# Initialize scroll container based on initial toggle state
+	_on_dismiss_btn_toggled(dismiss_btn.button_pressed)
 	
 	if OS.get_name() == "Web":
 		var join = JavaScriptBridge.eval("new URLSearchParams(location.search).get('join')", true)
@@ -79,17 +82,27 @@ func _on_send_btn_pressed() -> void:
 	var msg: String = send_ed.text
 	transfer_some_input.rpc(msg)
 	send_ed.text = ""
+	send_ed.grab_focus()  # Keep focus in the text field
 
 func _on_send_ed_text_submitted(msg: String) -> void:
 	"""let's send a message (to everyone)"""
 	transfer_some_input.rpc(msg)
 	send_ed.text = ""
+	send_ed.grab_focus()  # Keep focus in the text field
 	
 func _on_dismiss_btn_toggled(mode: bool) -> void:
 	dismiss_btn.release_focus()  # Remove focus to prevent space key from toggling button
 	send_btn.visible = mode
 	send_ed.visible = mode
 	scroll_ctn.visible = mode
+
+	# Adjust scroll container size flags based on toggle state
+	if mode:
+		scroll_ctn.size_flags_vertical = Control.SIZE_EXPAND_FILL  # Expand when visible
+		scroll_ctn.custom_minimum_size = Vector2(0, 100)  # Set minimum height when expanded
+	else:
+		scroll_ctn.size_flags_vertical = Control.SIZE_SHRINK_CENTER  # Shrink when hidden
+		scroll_ctn.custom_minimum_size = Vector2(0, 0)  # No minimum size when hidden
 
 func _on_session_created() -> void:
 	"""show be triggered on the host once session was obtained"""
@@ -109,13 +122,16 @@ func _on_session_left() -> void:
 func _log(msg: String) -> void:
 	print(msg)
 	log_lbl.text += "\n" + msg
-	#scroll_ctn.scroll_vertical = scroll_ctn.
-	#scroll_ctn.scroll_vertical += 100
+	# Auto-scroll to bottom when new messages are added
 	_page_down.call_deferred()
 
 func _page_down() -> void:
-	# TODO fix
-	scroll_ctn.scroll_vertical = int(scroll_ctn.get_v_scroll_bar().max_value)
+	# Ensure scroll container scrolls to the bottom
+	await get_tree().process_frame  # Wait for layout update
+	if scroll_ctn.visible:
+		var v_scroll = scroll_ctn.get_v_scroll_bar()
+		if v_scroll:
+			scroll_ctn.scroll_vertical = int(v_scroll.max_value)
 
 func _hide_forms() -> void:
 	serve_btn.visible = false
@@ -132,4 +148,3 @@ func transfer_some_input(txt: String) -> void:
 	if txt.length() == 0: return
 	var sender_id = str(multiplayer.get_remote_sender_id())
 	_log(sender_id + ": " + txt)
-	send_ed.call_deferred("grab_focus") # TODO not working?
