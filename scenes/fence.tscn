@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf352mnvjrp1a"]
+
+[ext_resource type="Texture2D" uid="uid://cuhl5vxn273va" path="res://textures/obstacles/fenceYellow.png" id="1_tphf0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4tlro"]
+size = Vector2(52, 8)
+
+[node name="Fence" type="StaticBody2D"]
+collision_layer = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tphf0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4tlro")

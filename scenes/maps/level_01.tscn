@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://xh8m17jjghs3"]
+[gd_scene load_steps=5 format=3 uid="uid://xh8m17jjghs3"]
 
 [ext_resource type="Script" uid="uid://b8a48kbrau3rw" path="res://scripts/level.gd" id="1_3tebk"]
 [ext_resource type="PackedScene" uid="uid://dm7tvxt4fmqfw" path="res://scenes/crate.tscn" id="1_jnve3"]
 [ext_resource type="PackedScene" uid="uid://boi32o0r72jbt" path="res://scenes/tree.tscn" id="2_xkcun"]
+[ext_resource type="PackedScene" uid="uid://cf352mnvjrp1a" path="res://scenes/fence.tscn" id="4_336h6"]
 
 [node name="Level01" type="Node2D"]
 script = ExtResource("1_3tebk")
@@ -33,3 +34,14 @@ position = Vector2(425, 107)
 
 [node name="Tree3" parent="." instance=ExtResource("2_xkcun")]
 position = Vector2(255, -283)
+
+[node name="Fence" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-36, 254)
+
+[node name="Fence2" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-114, 221)
+rotation = 0.7907129
+
+[node name="Fence3" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(42.000015, 225.99998)
+rotation = 2.4667
