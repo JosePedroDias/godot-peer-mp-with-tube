@@ -1,9 +1,11 @@
+
 class_name Tank
 extends CharacterBody2D
 
 @onready var body_spr: Sprite2D = $TBody
 @onready var barrel_spr: Sprite2D = $TBarrel
-@onready var health_bar_rect: ColorRect = $HealthPnl/HealthBarRect
+@onready var health_node: Node2D = $HealthNode
+@onready var health_bar_rect: ColorRect = $HealthNode/HealthPnl/HealthBarRect
 
 const MAX_HEALTH:float = 100
 const MAX_HEALTH_PIXELS:float = 40
@@ -21,28 +23,29 @@ var energy: float = MAX_HEALTH
 
 func _ready() -> void:
 	if theme.length() > 0: _set_theme(theme)
+	
+func _process(_delta: float) -> void:
+	health_node.rotation = -rotation
 
 func _set_theme(th: String) -> void:
 	body_spr.texture = load("res://textures/tanks/" + th + "/bodyo.png")
 	barrel_spr.texture = load("res://textures/tanks/" + th + "/b1o.png")
 
 func move_forward(vel: float) -> void:
-	var d_pos = Vector2.from_angle(body_spr.rotation + NINETY_RAD) * vel
+	var d_pos = Vector2.from_angle(rotation - NINETY_RAD) * vel
 	move_and_collide(d_pos)
 
-func rotate_body(dr: float, vel: float = 1.0) -> float:
-	var res = dr * vel
-	body_spr.rotation += res
-	return res
+func rotate_body(dr: float, vel: float = 1.0) -> void:
+	rotation += dr * vel
 
 func rotate_barrel(dr: float) -> void:
 	barrel_spr.rotation += dr
 
 func get_body_rotation() -> float:
-	return body_spr.rotation
+	return rotation
 	
 func get_barrel_rotation() -> float:
-	return barrel_spr.rotation
+	return rotation + barrel_spr.rotation
 
 func remove_health(energy_to_remove: float) -> void:
 	energy = max(0, energy - energy_to_remove)

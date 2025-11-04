@@ -102,7 +102,6 @@ func _custom_spawn_function(d: Variant) -> Node:
 			var rot: float = 0.0
 			if data.has("rotation"): rot = data["rotation"]
 			tank.rotate_body.call_deferred(rot)
-			tank.rotate_barrel.call_deferred(rot)
 			_terrain._tank_sys.set_tank(tank.peer_id, tank)
 			return tank
 		elif data["type"] == "bullet":

@@ -1,8 +1,7 @@
 - limit map movement
-- add obstacles: fence
 - HUD improvements (auto-join, focus)
-- ui_controls: multiple actions? (fire while moving?)
 - rebind keys
+- ui_controls: multiple actions? (fire while moving?)
 - ask and store name; show it instead of id and on overlay to tank
 - missile recharge time?
 - tint red fired against tanks

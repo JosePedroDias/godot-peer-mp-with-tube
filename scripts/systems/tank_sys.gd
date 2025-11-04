@@ -19,8 +19,7 @@ func process(delta: float) -> void:
 			pd.bump()
 			var vel: float = pd.thrust * delta * (Tank.FW_SPEED if pd.thrust > 0 else Tank.BW_SPEED)
 			if pd.body_drot != 0:
-				var r = t.rotate_body(pd.body_drot * delta * Tank.BODY_R_SPEED, vel)
-				t.rotate_barrel(r) # barrel follows body
+				t.rotate_body(pd.body_drot * delta * Tank.BODY_R_SPEED, vel)
 			if pd.barrel_drot != 0:
 				t.rotate_barrel(pd.barrel_drot * delta * Tank.BARREL_R_SPEED)
 			if pd.thrust != 0:
