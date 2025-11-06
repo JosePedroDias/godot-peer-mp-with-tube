@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxov2i8y20dyx"]
+
+[ext_resource type="Script" uid="uid://d08yytxrqstpc" path="res://scenes/ui/rebind_button.gd" id="1_pkq7d"]
+
+[node name="RebindKeysForm" type="PanelContainer"]
+custom_minimum_size = Vector2(150, 300)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -812.0
+offset_bottom = -443.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "change keys"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="SpeedUpButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "speed up"
+script = ExtResource("1_pkq7d")
+action_name = "up"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
+
+[node name="SpeedDownButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "speed down"
+script = ExtResource("1_pkq7d")
+action_name = "down"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
+
+[node name="TurnLeftButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "turn left"
+script = ExtResource("1_pkq7d")
+action_name = "left"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
+
+[node name="TurnRightButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "turn right"
+script = ExtResource("1_pkq7d")
+action_name = "right"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
+
+[node name="TurretLeftButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "turret left"
+script = ExtResource("1_pkq7d")
+action_name = "rotate_left"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
+
+[node name="TurretRightButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "turret right"
+script = ExtResource("1_pkq7d")
+action_name = "rotate_right"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
+
+[node name="FireButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "fire"
+script = ExtResource("1_pkq7d")
+action_name = "fire"
+metadata/_custom_type_script = "uid://d08yytxrqstpc"
