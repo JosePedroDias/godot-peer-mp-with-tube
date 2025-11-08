@@ -1,6 +1,10 @@
 class_name TankSys
 extends RefCounted
 
+# Constants for spawn collision detection
+const TANK_COLLISION_RADIUS: float = 30.0  # Slightly larger than tank's 40x40 collision box
+const MAX_SPAWN_ATTEMPTS: int = 10  # Maximum attempts before falling back to any position
+
 var _terrain: Terrain = null
 var _tanks_map: Dictionary[String, Tank]
 
@@ -45,3 +49,18 @@ func has_tank(id: String) -> bool:
 
 func erase_tank(id: String) -> void:
 	_tanks_map.erase(id)
+
+func get_safe_spawn_position() -> Vector2:
+	for attempt in range(MAX_SPAWN_ATTEMPTS):
+		var candidate_position = _terrain._level.get_spawn_position()
+		if _is_spawn_position_clear(candidate_position):
+			return candidate_position
+	return _terrain._level.get_spawn_position()
+
+func _is_spawn_position_clear(position: Vector2) -> bool:
+	for tank_id in _tanks_map:
+		var tank: Tank = _tanks_map.get(tank_id)
+		if tank != null:
+			var distance = position.distance_to(tank.position)
+			if distance < TANK_COLLISION_RADIUS: return false
+	return true

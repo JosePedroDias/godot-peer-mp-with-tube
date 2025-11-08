@@ -1,5 +1,4 @@
 - avoid same color tank attributions
-- avoid respawning over other tank
 - HUD improvements (auto-join, focus)
 - hook rebind keys to existing ui
 - ui_controls: multiple actions? (fire while moving?)
