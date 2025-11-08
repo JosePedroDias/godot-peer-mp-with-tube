@@ -60,14 +60,53 @@ func get_safe_spawn_position() -> Vector2:
 
 	for attempt in range(MAX_SPAWN_ATTEMPTS):
 		var candidate_position = _terrain._level.get_spawn_position()
-		if _is_spawn_position_clear(candidate_position):
+		if _is_position_clear_geo(candidate_position):
+		#if _is_position_clear_physics(candidate_position):
 			return candidate_position
 	return _terrain._level.get_spawn_position()
 
-func _is_spawn_position_clear(position: Vector2) -> bool:
+func _is_position_clear_geo(position: Vector2) -> bool:
+	"""using just geometry and _tanks_map structire"""
 	for tank_id in _tanks_map:
 		var tank: Tank = _tanks_map.get(tank_id)
 		if tank != null:
 			var distance = position.distance_to(tank.position)
 			if distance < TANK_COLLISION_RADIUS: return false
 	return true
+
+func _is_position_clear_physics(position: Vector2) -> bool:
+	"""using physics"""
+	var world = _terrain.get_world_2d()
+	if world == null:
+		push_error("TankSys: Could not get physics world")
+		return false
+
+	var space_state = world.direct_space_state
+	if space_state == null:
+		push_error("TankSys: Could not get space state")
+		return false
+
+	# Create a circular query to check for physics bodies at the spawn position
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = position
+	query.collision_mask = 2  # Check collision layer 2 (tanks and obstacles)
+	query.collide_with_areas = false  # Don't check areas (bullets are Area2D)
+	query.collide_with_bodies = true  # Check bodies (tanks and obstacles)
+
+	# Perform the query - if any bodies are found, position is not clear
+	var results = space_state.intersect_point(query)
+
+	# If no bodies found at exact point, check in a radius around the position
+	if results.is_empty():
+		var shape_query = PhysicsShapeQueryParameters2D.new()
+		var circle_shape = CircleShape2D.new()
+		circle_shape.radius = TANK_COLLISION_RADIUS
+		shape_query.shape = circle_shape
+		shape_query.transform = Transform2D(0, position)
+		shape_query.collision_mask = 2  # Check collision layer 2
+		shape_query.collide_with_areas = false
+		shape_query.collide_with_bodies = true
+
+		results = space_state.intersect_shape(shape_query)
+
+	return results.is_empty()
