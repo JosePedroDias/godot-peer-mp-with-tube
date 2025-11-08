@@ -11,11 +11,24 @@ var _fire_scene = load("res://scenes/fire.tscn")
 var _smoke_scene = load("res://scenes/smoke.tscn")
 var _tracks_scene = load("res://scenes/tracks.tscn")
 
+# Respawn system
+var _respawn_timer: Timer = null
+var _peers_waiting_respawn: Array[Dictionary] = []
+
 func _init(terr: Terrain) -> void:
 	_terrain = terr
-	
+
+func _setup_respawn_timer() -> void:
+	if _respawn_timer != null: return
+	_respawn_timer = Timer.new()
+	_respawn_timer.wait_time = 0.25  # Check every 250ms
+	_respawn_timer.timeout.connect(_on_respawn_timer_timeout)
+	_terrain.add_child(_respawn_timer)
+	_respawn_timer.start()
+
 func assign_spawner() -> void:
 	_terrain.spawner.spawn_function = _custom_spawn_function
+	_setup_respawn_timer()  # Set up timer when terrain is ready
 
 func spawn_tank(peer_id: String) -> void:
 	_terrain.spawner.spawn({
@@ -61,16 +74,25 @@ func despawn_tank(peer_id: String, respawn: bool) -> void:
 	#print("Despawned tank for peer: ", peer_id)
 	if not respawn: return
 
-	var respawn_timer = Timer.new()
-	respawn_timer.wait_time = RESPAWN_AFTER_SECS
-	respawn_timer.one_shot = true
-	_terrain.add_child(respawn_timer)
-	respawn_timer.timeout.connect(_on_respawn_timer_timeout.bind(peer_id, respawn_timer))
-	respawn_timer.start()
+	var respawn_time = Time.get_unix_time_from_system() + RESPAWN_AFTER_SECS
+	_peers_waiting_respawn.append({
+		"peer_id": peer_id,
+		"respawn_time": respawn_time
+	})
 
-func _on_respawn_timer_timeout(peer_id: String, timer: Timer) -> void:
-	spawn_tank(peer_id)
-	timer.queue_free()
+func _on_respawn_timer_timeout() -> void:
+	if _peers_waiting_respawn.is_empty(): return
+
+	var current_time = Time.get_unix_time_from_system()
+	var peers_to_respawn: Array[int] = []
+	for i in range(_peers_waiting_respawn.size()):
+		var respawn_data = _peers_waiting_respawn[i]
+		if current_time >= respawn_data.respawn_time:
+			spawn_tank(respawn_data.peer_id)
+			peers_to_respawn.append(i)
+
+	for i in range(peers_to_respawn.size() - 1, -1, -1):
+		_peers_waiting_respawn.remove_at(peers_to_respawn[i])
 
 func spawn_bullet(id: String) -> void:
 	var pd: PeerData = _terrain.peer_data.get(id)
