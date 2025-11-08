@@ -1,6 +1,7 @@
-- limit map movement
+- avoid same color tank attributions
+- avoid respawning over other tank
 - HUD improvements (auto-join, focus)
-- rebind keys
+- hook rebind keys to existing ui
 - ui_controls: multiple actions? (fire while moving?)
 - ask and store name; show it instead of id and on overlay to tank
 - missile recharge time?

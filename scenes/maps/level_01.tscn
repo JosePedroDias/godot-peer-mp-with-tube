@@ -8,40 +8,523 @@
 [node name="Level01" type="Node2D"]
 script = ExtResource("1_3tebk")
 
-[node name="Crate" parent="." instance=ExtResource("1_jnve3")]
-position = Vector2(-301, -390)
-
 [node name="Crate2" parent="." instance=ExtResource("1_jnve3")]
 position = Vector2(-289, 171)
 
 [node name="Crate3" parent="." instance=ExtResource("1_jnve3")]
-position = Vector2(458, -171)
+position = Vector2(532, -255)
+
+[node name="Crate7" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(502, -264)
+
+[node name="Crate8" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(472, -274)
+
+[node name="Crate9" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(442, -283)
+
+[node name="Crate14" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(90, -557)
+
+[node name="Crate15" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(60, -566)
+
+[node name="Crate18" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-220, 134)
+
+[node name="Crate19" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-250, 125)
+
+[node name="Crate16" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(30, -576)
+
+[node name="Crate17" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(0, -585)
+
+[node name="Crate22" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-388, -721)
+
+[node name="Crate23" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-418, -730)
 
 [node name="Crate4" parent="." instance=ExtResource("1_jnve3")]
-position = Vector2(-19, -15)
+position = Vector2(-275, 139)
+
+[node name="Crate5" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-315, 238)
+
+[node name="Crate6" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-301, 206)
+
+[node name="Crate10" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-379, -666)
+
+[node name="Crate11" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-365, -698)
+
+[node name="Crate12" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-405, -599)
+
+[node name="Crate13" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-391, -631)
+
+[node name="Crate20" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(424, -319)
+
+[node name="Crate21" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(438, -351)
+
+[node name="Crate24" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(-13, -620)
+
+[node name="Crate25" parent="." instance=ExtResource("1_jnve3")]
+position = Vector2(1, -652)
 
 [node name="Spawn" type="Node2D" parent="."]
-position = Vector2(-176, -177)
+position = Vector2(-663, -485)
+
+[node name="Spawn5" type="Node2D" parent="."]
+position = Vector2(-570, 53)
+
+[node name="Spawn4" type="Node2D" parent="."]
+position = Vector2(-503, -857)
+
+[node name="Spawn6" type="Node2D" parent="."]
+position = Vector2(550, -459)
+
+[node name="Spawn7" type="Node2D" parent="."]
+position = Vector2(69, -792)
 
 [node name="Spawn2" type="Node2D" parent="."]
-position = Vector2(235, 190)
+position = Vector2(368, 252)
+
+[node name="Spawn8" type="Node2D" parent="."]
+position = Vector2(-142, -51)
+
+[node name="Spawn9" type="Node2D" parent="."]
+position = Vector2(104, -369)
+
+[node name="Spawn3" type="Node2D" parent="."]
+position = Vector2(-224, 302)
 
 [node name="Tree" parent="." instance=ExtResource("2_xkcun")]
-position = Vector2(-261, -66)
+position = Vector2(-336, -19)
+
+[node name="Tree14" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-13, 75)
+
+[node name="Tree12" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-39, -192)
+
+[node name="Tree9" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(224, -127)
+
+[node name="Tree6" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-485, 163)
 
 [node name="Tree2" parent="." instance=ExtResource("2_xkcun")]
 position = Vector2(425, 107)
 
 [node name="Tree3" parent="." instance=ExtResource("2_xkcun")]
-position = Vector2(255, -283)
+position = Vector2(280, -427)
+
+[node name="Tree4" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-329, -241)
+
+[node name="Tree11" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-594, -698)
+
+[node name="Tree10" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(256, -666)
+
+[node name="Tree8" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-431, -427)
+
+[node name="Tree5" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(168, 252)
 
 [node name="Fence" parent="." instance=ExtResource("4_336h6")]
-position = Vector2(-36, 254)
+position = Vector2(168, 408)
+
+[node name="Fence4" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(224, 408)
+
+[node name="Fence5" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(280, 408)
+
+[node name="Fence6" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(336, 408)
+
+[node name="Fence7" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(392, 408)
+
+[node name="Fence8" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-112, 408)
+
+[node name="Fence9" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-56, 408)
+
+[node name="Fence10" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(0, 408)
+
+[node name="Fence11" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(56, 408)
+
+[node name="Fence12" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(112, 408)
+
+[node name="Fence13" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-392, 408)
+
+[node name="Fence14" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-336, 408)
+
+[node name="Fence15" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-280, 408)
+
+[node name="Fence16" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-224, 408)
+
+[node name="Fence17" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-168, 408)
 
 [node name="Fence2" parent="." instance=ExtResource("4_336h6")]
-position = Vector2(-114, 221)
-rotation = 0.7907129
+position = Vector2(-69, -960)
 
-[node name="Fence3" parent="." instance=ExtResource("4_336h6")]
-position = Vector2(42.000015, 225.99998)
-rotation = 2.4667
+[node name="Fence18" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-13, -960)
+
+[node name="Fence19" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(43, -960)
+
+[node name="Fence20" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(99, -960)
+
+[node name="Fence21" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-349, -960)
+
+[node name="Fence70" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-293, -960)
+
+[node name="Fence71" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-237, -960)
+
+[node name="Fence72" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-181, -960)
+
+[node name="Fence73" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-125, -960)
+
+[node name="Fence75" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-517, -960)
+
+[node name="Fence76" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-461, -960)
+
+[node name="Fence77" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-405, -960)
+
+[node name="Fence22" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-442.00003, 388.00003)
+rotation = -2.3561945
+
+[node name="Fence23" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-481.99994, 349)
+rotation = -2.3561945
+
+[node name="Fence24" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-522.0001, 309.00003)
+rotation = -2.3561945
+
+[node name="Fence25" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-562, 270)
+rotation = -2.3561945
+
+[node name="Fence26" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-601.0001, 229.00003)
+rotation = -2.3561945
+
+[node name="Fence27" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-641, 190)
+rotation = -2.3561945
+
+[node name="Fence36" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-522.0001, 309.00003)
+rotation = -2.3561945
+
+[node name="Fence37" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-562, 270)
+rotation = -2.3561945
+
+[node name="Fence38" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-601.0001, 229.00003)
+rotation = -2.3561945
+
+[node name="Fence39" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-641, 190)
+rotation = -2.3561945
+
+[node name="Tree7" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-155, -760)
+
+[node name="Tree13" parent="." instance=ExtResource("2_xkcun")]
+position = Vector2(-155, -427)
+
+[node name="Fence53" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(346.99997, -746)
+rotation = -2.3561945
+
+[node name="Fence54" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(307.00006, -785)
+rotation = -2.3561945
+
+[node name="Fence74" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(266.99988, -825)
+rotation = -2.3561945
+
+[node name="Fence82" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(227, -864)
+rotation = -2.3561945
+
+[node name="Fence83" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(187.99988, -905)
+rotation = -2.3561945
+
+[node name="Fence84" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(148, -944)
+rotation = -2.3561945
+
+[node name="Fence85" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(266.99988, -825)
+rotation = -2.3561945
+
+[node name="Fence86" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(227, -864)
+rotation = -2.3561945
+
+[node name="Fence87" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(187.99988, -905)
+rotation = -2.3561945
+
+[node name="Fence88" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(148, -944)
+rotation = -2.3561945
+
+[node name="Fence89" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(398, -728)
+
+[node name="Fence90" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(642, -503)
+rotation = -2.0943952
+
+[node name="Fence91" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(606.00006, -553)
+rotation = -2.3561945
+
+[node name="Fence92" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(565.9999, -593)
+rotation = -2.3561945
+
+[node name="Fence93" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(526, -632)
+rotation = -2.3561945
+
+[node name="Fence94" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(486.99988, -673)
+rotation = -2.3561945
+
+[node name="Fence95" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(447, -712)
+rotation = -2.3561945
+
+[node name="Fence96" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(565.9999, -593)
+rotation = -2.3561945
+
+[node name="Fence97" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(526, -632)
+rotation = -2.3561945
+
+[node name="Fence98" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(486.99988, -673)
+rotation = -2.3561945
+
+[node name="Fence99" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(447, -712)
+rotation = -2.3561945
+
+[node name="Fence40" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-607.0001, -277.99997)
+rotation = -2.3561945
+
+[node name="Fence41" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-647, -317)
+rotation = -2.3561945
+
+[node name="Fence42" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-686.0001, -357.99997)
+rotation = -2.3561945
+
+[node name="Fence43" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-726, -397)
+rotation = -2.3561945
+
+[node name="Fence44" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-607.0001, -277.99997)
+rotation = -2.3561945
+
+[node name="Fence45" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-647, -317)
+rotation = -2.3561945
+
+[node name="Fence46" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-686.0001, -357.99997)
+rotation = -2.3561945
+
+[node name="Fence47" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-726, -397)
+rotation = -2.3561945
+
+[node name="Fence28" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-662, 141)
+rotation = -1.5707964
+
+[node name="Fence29" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-662, 84)
+rotation = -1.5707964
+
+[node name="Fence30" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-662, 28)
+rotation = -1.5707964
+
+[node name="Fence33" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-586, -116)
+rotation = -1.5707964
+
+[node name="Fence34" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-586, -173)
+rotation = -1.5707964
+
+[node name="Fence35" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-586, -229)
+rotation = -1.5707964
+
+[node name="Fence62" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(580, 154)
+rotation = -1.5707964
+
+[node name="Fence63" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(580, 97)
+rotation = -1.5707964
+
+[node name="Fence64" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(580, 41)
+rotation = -1.5707964
+
+[node name="Fence59" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-748, -447)
+rotation = -1.5707964
+
+[node name="Fence60" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-748, -504)
+rotation = -1.5707964
+
+[node name="Fence61" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-748, -560)
+rotation = -1.5707964
+
+[node name="Fence31" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-643, -23.99997)
+rotation = -0.7853982
+
+[node name="Fence32" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-604, -63)
+rotation = -0.7853982
+
+[node name="Fence78" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-685, -823)
+rotation = -0.7853982
+
+[node name="Fence79" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-646, -862)
+rotation = -0.7853982
+
+[node name="Fence80" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-606, -902)
+rotation = -0.7853982
+
+[node name="Fence81" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-567, -941)
+rotation = -0.7853982
+
+[node name="Fence55" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-705.9999, -661)
+rotation = -1.5707964
+
+[node name="Fence56" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-705.9999, -718)
+rotation = -1.5707964
+
+[node name="Fence57" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-705.9999, -774)
+rotation = -1.5707964
+
+[node name="Fence58" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(-723.9999, -608)
+rotation = -0.7853982
+
+[node name="Fence48" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(501, 296)
+rotation = -1.5707964
+
+[node name="Fence49" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(520, 244.00003)
+rotation = -0.7853982
+
+[node name="Fence50" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(559, 205)
+rotation = -0.7853982
+
+[node name="Fence65" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(661, -101)
+rotation = -1.5707964
+
+[node name="Fence66" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(661, -158)
+rotation = -1.5707964
+
+[node name="Fence67" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(661, -214)
+rotation = -1.5707964
+
+[node name="Fence100" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(660, -273)
+rotation = -1.5707964
+
+[node name="Fence101" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(660, -330)
+rotation = -1.5707964
+
+[node name="Fence102" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(660, -386)
+rotation = -1.5707964
+
+[node name="Fence104" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(660, -443)
+rotation = -1.5707964
+
+[node name="Fence68" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(601, -10.9999695)
+rotation = -0.7853982
+
+[node name="Fence69" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(640, -50)
+rotation = -0.7853982
+
+[node name="Fence51" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(441, 386)
+rotation = -0.7853982
+
+[node name="Fence52" parent="." instance=ExtResource("4_336h6")]
+position = Vector2(480, 347)
+rotation = -0.7853982
