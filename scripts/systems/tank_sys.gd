@@ -7,6 +7,7 @@ const MAX_SPAWN_ATTEMPTS: int = 10  # Maximum attempts before falling back to an
 
 var _terrain: Terrain = null
 var _tanks_map: Dictionary[String, Tank]
+var _assigned_themes: Dictionary[String, String] = {}  # peer_id -> theme mapping
 
 func _init(terr: Terrain) -> void:
 	_terrain = terr
@@ -41,6 +42,51 @@ func get_theme() -> String:
 	var index = randi() % themes.size()
 	return themes[index]
 
+func get_theme_for_peer(peer_id: String) -> String:
+	# If this peer already has a theme assigned, return it
+	if _assigned_themes.has(peer_id):
+		return _assigned_themes[peer_id]
+
+	var themes = Tank.THEMES
+	var used_themes: Array[String] = []
+
+	# Collect all currently used themes
+	for assigned_theme in _assigned_themes.values():
+		if not used_themes.has(assigned_theme):
+			used_themes.append(assigned_theme)
+
+	# Find the first available theme
+	for theme in themes:
+		if not used_themes.has(theme):
+			_assigned_themes[peer_id] = theme
+			return theme
+
+	# If all themes are used, assign randomly (fallback for more players than themes)
+	var theme = themes[randi() % themes.size()]
+	_assigned_themes[peer_id] = theme
+	return theme
+
+func get_assigned_themes() -> Dictionary[String, String]:
+	"""Returns a copy of the current theme assignments for debugging"""
+	return _assigned_themes.duplicate()
+
+func get_available_themes() -> Array[String]:
+	"""Returns list of themes that are not currently assigned to any player"""
+	var themes = Tank.THEMES
+	var used_themes: Array[String] = []
+
+	# Collect all currently used themes
+	for assigned_theme in _assigned_themes.values():
+		if not used_themes.has(assigned_theme):
+			used_themes.append(assigned_theme)
+
+	var available: Array[String] = []
+	for theme in themes:
+		if not used_themes.has(theme):
+			available.append(theme)
+
+	return available
+
 func set_tank(id: String, tank: Tank) -> void:
 	_tanks_map.set(id, tank)
 	
@@ -52,6 +98,8 @@ func has_tank(id: String) -> bool:
 
 func erase_tank(id: String) -> void:
 	_tanks_map.erase(id)
+	# Also remove the theme assignment when tank is removed
+	_assigned_themes.erase(id)
 
 func get_safe_spawn_position() -> Vector2:
 	if _terrain == null or _terrain._level == null:

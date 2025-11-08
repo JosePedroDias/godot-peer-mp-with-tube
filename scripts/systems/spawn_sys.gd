@@ -34,7 +34,7 @@ func spawn_tank(peer_id: String) -> void:
 	_terrain.spawner.spawn({
 		"type": "tank",
 		"peer_id": peer_id,
-		"theme": _terrain._tank_sys.get_theme(),
+		"theme": _terrain._tank_sys.get_theme_for_peer(peer_id),
 		#"position": Vector2(_terrain._level.get_spawn_position()),
 		"position": Vector2(_terrain._tank_sys.get_safe_spawn_position()),
 		"rotation": randf() * 2.0 * PI

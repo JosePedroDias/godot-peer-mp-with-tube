@@ -1,4 +1,4 @@
-- avoid same color tank attributions
+- respawn issue fix? (tried numerous things)
 - HUD improvements (auto-join, focus)
 - hook rebind keys to existing ui
 - ui_controls: multiple actions? (fire while moving?)
