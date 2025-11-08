@@ -9,5 +9,8 @@ func _ready() -> void:
 			_spawn_positions.append(node.position)
 
 func get_spawn_position() -> Vector2:
+	if _spawn_positions.is_empty():
+		push_error("Level: No spawn positions available, returning zero position")
+		return Vector2.ZERO
 	var index = randi() % _spawn_positions.size()
 	return _spawn_positions[index]

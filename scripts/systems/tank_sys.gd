@@ -12,12 +12,13 @@ func _init(terr: Terrain) -> void:
 	_terrain = terr
 
 func process(delta: float) -> void:
+	var to_despawn: Array[String] = []
 	for id in _tanks_map:
 		var t: Tank = _tanks_map.get(id)
-		if t == null: return
+		if t == null: continue
 		if t.energy <= 0:
-			_terrain._spawn_sys.despawn_tank(t.peer_id, true)
-			return
+			to_despawn.push_back(t.peer_id)
+			continue
 		var pd: PeerData = _terrain.peer_data.get(id)
 		if t != null and pd != null:
 			pd.bump()
@@ -32,6 +33,8 @@ func process(delta: float) -> void:
 				if dist > Tank.TRACKS_MIN_DIST:
 					_terrain._spawn_sys.spawn_tracks(t.position, t.get_body_rotation())
 					pd.last_tracks_pos = Vector2(t.position)
+	for peer_id in to_despawn:
+		_terrain._spawn_sys.despawn_tank(peer_id, true)
 
 func get_theme() -> String:
 	var themes = Tank.THEMES
@@ -51,6 +54,10 @@ func erase_tank(id: String) -> void:
 	_tanks_map.erase(id)
 
 func get_safe_spawn_position() -> Vector2:
+	if _terrain == null or _terrain._level == null:
+		push_error("TankSys: Terrain or level is null when trying to get spawn position")
+		return Vector2.ZERO
+
 	for attempt in range(MAX_SPAWN_ATTEMPTS):
 		var candidate_position = _terrain._level.get_spawn_position()
 		if _is_spawn_position_clear(candidate_position):
