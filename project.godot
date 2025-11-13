@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="godot_peer_mp"
+config/name="godot_p2p_tanks"
 run/main_scene="uid://o2874ep7w4k0"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"

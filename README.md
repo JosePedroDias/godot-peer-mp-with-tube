@@ -1,63 +1,17 @@
-# Godot Peer Multiplayer with Tube
+# Godot P2P Tanks Game
 
-Super basic example suitable for web
-Basic chat with rename capability (`myname <name>`)
+2D. Using Kenny sprites.
+Suitable for web. Using P2P with [Tube](https://github.com/koopmyers/tube)
 
-## setup
+Input events sent via RPC to server.
+Server keeps a buffer on input events it uses to average out directional changes.
+Makes heavy use of the MultiplayerSpawner and MultiplayerSynchronizer.
+Tanks are driven as kinematic bodies. Bullets are also physics powered. Obstacles too (stationary).
+All other eyecandy such as smoke, tracks and explosions are spawned but locally animated and despawned.
 
-https://github.com/koopmyers/tube
+There's a couple bugs.
+Notably, the virtual joypad overlay is not multitouch which makes controlling the tank very quirky,
+as it prevents us from moving and rotating or firing at the same time. :/
 
-look up "tube" plugin in godot asset store
-https://godotengine.org/asset-library/asset/4419
-
-https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html
-
-scene > add node > tube client  
-click on context to create one  
-on the chevron do save as `tubectx.tres`  
-generate an app id
-
-add trackers:
-- `wss://tracker.openwebtorrent.com`
-- `wss://tracker.files.fm:7073/announce`
-- `wss://tracker.btorrent.xyz/`
-- `wss://tracker.ghostchu-services.top:443/announce`
-
-or you can host your own, such as [bittorrent-tracker](https://www.npmjs.com/package/bittorrent-tracker)
-
-add stuns:
-- `stun:stun.l.google.com:19302`
-- `stun:stun1.l.google.com:19302`
-- `stun:stun2.l.google.com:19302`
-
-## try it out
-
-Project > Export > Web  > Export Web
-
-```sh
-cd web
-nvm use latest
-npx http-server -c-1 --cors . &
-```
-
-http://localhost:8080
-
-press SERVE button  
-share id
-
-other browser  
-paste/write id  
-press JOIN button
-
-## wiring RPC
-
-add before a function:  
-`@rpc("any_peer", "call_remote", "reliable")`  
-or  
-`@rpc("authority", "call_local", "reliable")`  
-depending on where the function runs (on all players or just the server)
-
-to call it, do  
-`fun.rpc(args...)`  
-or  
-`fun.rpc_id(id_override, args...)`
+I used [bittorrent-tracker](https://www.npmjs.com/package/bittorrent-tracker) to host my own tracker.
+I may end up forking this to make it more dedicated/suitable for this use case.
